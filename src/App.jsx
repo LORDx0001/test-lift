@@ -29,7 +29,7 @@ const LoadingScreen = ({ brandName }) => (
         animate={{ opacity: 1, y: 0 }}
         className="text-3xl font-black tracking-[0.3em] text-graphite uppercase mb-6"
       >
-        {brandName || 'Osten'}
+        {brandName || 'Lift Test'}
       </motion.span>
       <div className="w-32 h-[1px] bg-graphite/10 relative overflow-hidden">
         <motion.div 
@@ -106,7 +106,7 @@ const Navbar = ({ lang, setLang, general, phones }) => {
               <img src={logo} alt="Logo" className="h-16 object-contain" />
             ) : (
               <span className={`text-3xl font-black tracking-tighter uppercase transition-colors duration-500 ${scrolled ? 'text-graphite' : 'text-white'}`}>
-                {general?.brand_name || 'Osten'}
+                {general?.brand_name || 'Lift test'}
               </span>
             )}
           </a>
@@ -158,7 +158,7 @@ const Navbar = ({ lang, setLang, general, phones }) => {
                 <img src={logo} alt="Logo" className="h-10 object-contain brightness-0 invert" />
               ) : (
                 <span className="text-2xl font-black tracking-tighter text-white uppercase">
-                  {general?.brand_name || 'Osten'}
+                  {general?.brand_name || 'Lift test'}
                 </span>
               )}
               <button className="text-white hover:text-safety-orange transition-colors" onClick={() => setIsOpen(false)}>
@@ -213,11 +213,11 @@ const Hero = ({ lang, hero, phones, emails }) => {
   if (!title) return null;
 
   return (
-    <section className="relative min-h-screen flex items-center justify-center pt-20 overflow-hidden bg-white">
+    <section id="home" className="relative min-h-screen flex items-center justify-center pt-20 overflow-hidden bg-white">
       <div className="absolute inset-0 z-0 overflow-hidden">
         <div className="absolute inset-0 bg-black/40 z-10" />
         <img
-          src={hero?.hero_bg ? `http://${window.location.hostname}:8000${hero.hero_bg}` : "/hero.png"}
+          src={hero?.hero_bg ? `${import.meta.env.VITE_API_BASE_URL}${hero.hero_bg}` : "/hero.png"}
           alt="Engineering"
           className="w-full h-full object-cover opacity-90"
         />
@@ -472,7 +472,7 @@ const Contact = ({ lang, contact, phones, emails }) => {
     }
 
     try {
-      const res = await fetch(`http://${window.location.hostname}:8000/api/contact/`, {
+      const res = await fetch(`${import.meta.env.VITE_API_BASE_URL}/api/contact/`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(formData)
@@ -603,8 +603,9 @@ const Contact = ({ lang, contact, phones, emails }) => {
 };
 
 /* ─── Footer ─────────────────────────────────────────────────────── */
-const Footer = ({ lang, general, phones, emails }) => {
+const Footer = ({ lang, setLang, general, phones, emails }) => {
   const t = translations[lang].footer;
+  const nav = translations[lang].nav;
   const logo = general?.footer_logo;
   const phone = phones?.[0]?.number;
   const email = emails?.[0]?.email;
@@ -618,7 +619,7 @@ const Footer = ({ lang, general, phones, emails }) => {
               <img src={logo} alt="Footer Logo" className="h-16 object-contain" />
             ) : (
               <span className="text-3xl font-black tracking-tighter uppercase">
-                {general?.brand_name || 'OSTEN'}
+                {general?.brand_name || 'Lift test'}
               </span>
             )}
             <p className="text-white/30 text-xs font-medium leading-relaxed max-w-xs">
@@ -630,9 +631,11 @@ const Footer = ({ lang, general, phones, emails }) => {
             <div className="space-y-4">
               <h4 className="text-[10px] font-bold text-white/20 uppercase tracking-[0.3em]">{lang === 'ru' ? 'Меню' : lang === 'en' ? 'Menu' : 'Menyu'}</h4>
               <nav className="flex flex-col space-y-2 text-[10px] font-bold uppercase tracking-widest text-white/50">
-                <a href="#home" className="hover:text-safety-orange transition-colors">Home</a>
-                <a href="#experience" className="hover:text-safety-orange transition-colors">Experience</a>
-                <a href="#services" className="hover:text-safety-orange transition-colors">Services</a>
+                <a href="#home" className="hover:text-safety-orange transition-colors">{nav.home}</a>
+                <a href="#experience" className="hover:text-safety-orange transition-colors">{nav.experience}</a>
+                <a href="#services" className="hover:text-safety-orange transition-colors">{nav.services}</a>
+                <a href="#gallery" className="hover:text-safety-orange transition-colors">{nav.gallery}</a>
+                <a href="#contact" className="hover:text-safety-orange transition-colors">{nav.contact}</a>
               </nav>
             </div>
             <div className="space-y-4">
@@ -666,6 +669,7 @@ const Footer = ({ lang, general, phones, emails }) => {
           <span className="text-[10px] font-bold text-white/10 uppercase tracking-[0.5em]">
             {t.copy}
           </span>
+          <LanguageSwitcher lang={lang} setLang={setLang} isDark={true} />
           <div className="flex items-center space-x-2">
             <div className="w-1 h-1 bg-safety-orange rounded-full animate-pulse" />
             <span className="text-[10px] font-bold text-white/30 uppercase tracking-widest">System Status: Online</span>
@@ -683,7 +687,7 @@ function App() {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    fetch(`http://${window.location.hostname}:8000/api/page-data/`)
+    fetch(`${import.meta.env.VITE_API_BASE_URL}/api/page-data/`)
       .then(res => res.json())
       .then(data => {
         setPageData(data);
@@ -709,7 +713,7 @@ function App() {
         <Gallery lang={lang} gallery={pageData?.gallery} imgs={pageData?.gallery_images} />
         <Contact lang={lang} contact={pageData?.contact} phones={pageData?.phones} emails={pageData?.emails} />
       </main>
-      <Footer lang={lang} general={pageData?.general} phones={pageData?.phones} emails={pageData?.emails} />
+      <Footer lang={lang} setLang={setLang} general={pageData?.general} phones={pageData?.phones} emails={pageData?.emails} />
     </div>
   );
 }
