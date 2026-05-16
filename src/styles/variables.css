@@ -1,0 +1,19 @@
+:root {
+  --navy:    #1A2A40;
+  --navy2:   #223650;
+  --navy3:   #2C4463;
+  --blue:    #0F52A0;
+  --blue2:   #1564C0;
+  --accent:  #2B8FFF;
+  --accentL: #5AABFF;
+  --white:   #FFFFFF;
+  --offwhite:#EBF2FB;
+  --gray:    #6B82A0;
+  --gray2:   #A8BDD4;
+  --border:  rgba(255,255,255,0.07);
+  --card:    rgba(255,255,255,0.03);
+  --radius:  6px;
+  --transition: 0.25s ease;
+  --shadow: 0 4px 24px rgba(0,0,0,0.35);
+  --shadow-accent: 0 0 24px rgba(43,143,255,0.15);
+}
