@@ -7,25 +7,39 @@ import { CTABanner } from '../components/ui';
 
 // ─── Hero ───────────────────────────────────────────────────────────
 function Hero() {
-  const { t } = useI18n();
+  const { t, lang } = useI18n();
+  const [heroData, setHeroData] = useState(null);
+
+  useEffect(() => {
+    endpoints.pageData().then(res => setHeroData(res.data?.hero)).catch(console.error);
+  }, []);
+
+  const dynamicBg = heroData?.hero_bg;
+  const title = heroData ? (heroData[`title_${lang}`] || heroData.title_ru || t.hero.title) : t.hero.title;
+  const desc = heroData ? (heroData[`desc_${lang}`] || heroData.desc_ru || t.hero.subtitle) : t.hero.subtitle;
+
   return (
     <section style={{
       minHeight: '100vh', display: 'flex', alignItems: 'center',
-      background: 'var(--navy)', position: 'relative', overflow: 'hidden',
+      background: dynamicBg ? `linear-gradient(rgba(14, 38, 64, 0.85), rgba(14, 38, 64, 0.95)), url(${dynamicBg}) center/cover no-repeat` : 'var(--navy)',
+      position: 'relative', overflow: 'hidden',
       paddingTop: 72,
-    }} className="grid-bg">
-      {/* Decorative geometry */}
-      <div style={{ position: 'absolute', right: 0, top: 0, bottom: 0, width: '45%', overflow: 'hidden', opacity: 0.06, pointerEvents: 'none' }}>
-        <svg viewBox="0 0 500 700" fill="none" style={{ width: '100%', height: '100%' }}>
-          <rect x="40" y="40" width="420" height="620" rx="2" stroke="var(--accent)" strokeWidth="1"/>
-          <rect x="80" y="80" width="340" height="540" rx="2" stroke="var(--accent)" strokeWidth="0.5"/>
-          <line x1="40" y1="340" x2="460" y2="340" stroke="var(--accent)" strokeWidth="0.5"/>
-          <line x1="250" y1="40" x2="250" y2="660" stroke="var(--accent)" strokeWidth="0.5"/>
-          {[...Array(8)].map((_, i) => (
-            <rect key={i} x={160} y={80 + i * 67} width={180} height={55} rx="1" stroke="var(--accent)" strokeWidth="0.5"/>
-          ))}
-        </svg>
-      </div>
+    }} className={!dynamicBg ? 'grid-bg' : ''}>
+      
+      {/* Decorative geometry - only show if no bg image, or make it subtle */}
+      {!dynamicBg && (
+        <div style={{ position: 'absolute', right: 0, top: 0, bottom: 0, width: '45%', overflow: 'hidden', opacity: 0.06, pointerEvents: 'none' }}>
+          <svg viewBox="0 0 500 700" fill="none" style={{ width: '100%', height: '100%' }}>
+            <rect x="40" y="40" width="420" height="620" rx="2" stroke="var(--accent)" strokeWidth="1"/>
+            <rect x="80" y="80" width="340" height="540" rx="2" stroke="var(--accent)" strokeWidth="0.5"/>
+            <line x1="40" y1="340" x2="460" y2="340" stroke="var(--accent)" strokeWidth="0.5"/>
+            <line x1="250" y1="40" x2="250" y2="660" stroke="var(--accent)" strokeWidth="0.5"/>
+            {[...Array(8)].map((_, i) => (
+              <rect key={i} x={160} y={80 + i * 67} width={180} height={55} rx="1" stroke="var(--accent)" strokeWidth="0.5"/>
+            ))}
+          </svg>
+        </div>
+      )}
 
       {/* Accent glow */}
       <div style={{ position: 'absolute', top: '40%', right: '20%', width: 400, height: 400, background: 'radial-gradient(circle, rgba(43,143,255,0.08) 0%, transparent 70%)', pointerEvents: 'none' }} />
@@ -44,12 +58,12 @@ function Hero() {
             whiteSpace: 'pre-line',
             maxWidth: 700,
           }}>
-            {t.hero.title}
+            {title}
           </h1>
         </FadeUp>
         <FadeUp delay={0.2}>
           <p style={{ fontSize: 17, color: 'var(--gray2)', maxWidth: 520, marginBottom: 40, lineHeight: 1.7 }}>
-            {t.hero.subtitle}
+            {desc}
           </p>
         </FadeUp>
         <FadeUp delay={0.3}>
@@ -141,24 +155,34 @@ function ServicesPreview() {
               <FadeUp key={s.slug || i} delay={i * 0.1}>
                 <Link to={`/services/${s.slug}`} style={{ textDecoration: 'none', display: 'block', height: '100%' }}>
                   <div style={{
-                    background: 'var(--navy2)', padding: 32,
+                    background: 'var(--navy2)',
                     borderBottom: '3px solid transparent',
                     transition: 'all 0.25s',
                     height: '100%',
                     position: 'relative',
-                    overflow: 'hidden'
+                    overflow: 'hidden',
+                    display: 'flex',
+                    flexDirection: 'column'
                   }}
                     onMouseEnter={e => { e.currentTarget.style.background = 'var(--navy3)'; e.currentTarget.style.borderBottomColor = 'var(--accent)'; e.currentTarget.style.transform = 'translateY(-4px)'; }}
                     onMouseLeave={e => { e.currentTarget.style.background = 'var(--navy2)'; e.currentTarget.style.borderBottomColor = 'transparent'; e.currentTarget.style.transform = 'translateY(0)'; }}
                   >
-                    {s.image && (
-                      <div style={{ position: 'absolute', top: 0, right: 0, width: '50%', height: '100%', opacity: 0.1, backgroundImage: `url(${s.image})`, backgroundSize: 'cover', backgroundPosition: 'center', pointerEvents: 'none' }} />
+                    {s.image ? (
+                      <div style={{ width: '100%', height: 180, overflow: 'hidden' }}>
+                        <img src={s.image} alt={title} style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
+                      </div>
+                    ) : (
+                      <div style={{ padding: '32px 32px 0' }}>
+                        <ServiceIcon slug={s.icon || s.slug} />
+                      </div>
                     )}
-                    <div style={{ marginBottom: 20, position: 'relative', zIndex: 1 }}><ServiceIcon slug={s.icon || s.slug} /></div>
-                    <h3 style={{ fontSize: 20, marginBottom: 12, color: 'var(--white)', position: 'relative', zIndex: 1 }}>{title}</h3>
-                    {desc && <p style={{ fontSize: 14, color: 'var(--gray)', lineHeight: 1.6, position: 'relative', zIndex: 1 }}>{desc}</p>}
-                    <div style={{ marginTop: 24, display: 'flex', alignItems: 'center', gap: 8, color: 'var(--accent)', fontSize: 13, fontWeight: 500, position: 'relative', zIndex: 1 }}>
-                      {lang === 'ru' ? 'Подробнее' : 'Batafsil'} <ArrowRight size={14} />
+                    
+                    <div style={{ padding: 32, flex: 1, display: 'flex', flexDirection: 'column' }}>
+                      <h3 style={{ fontSize: 20, marginBottom: 12, color: 'var(--white)', position: 'relative', zIndex: 1 }}>{title}</h3>
+                      {desc && <p style={{ fontSize: 14, color: 'var(--gray)', lineHeight: 1.6, position: 'relative', zIndex: 1, flex: 1 }}>{desc}</p>}
+                      <div style={{ marginTop: 24, display: 'flex', alignItems: 'center', gap: 8, color: 'var(--accent)', fontSize: 13, fontWeight: 500, position: 'relative', zIndex: 1 }}>
+                        {lang === 'ru' ? 'Подробнее' : 'Batafsil'} <ArrowRight size={14} />
+                      </div>
                     </div>
                   </div>
                 </Link>

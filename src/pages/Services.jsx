@@ -29,20 +29,28 @@ export function ServicesPage() {
               return (
                 <FadeUp key={s.slug || i} delay={i * 0.1}>
                   <Link to={`/services/${s.slug}`} style={{ textDecoration: 'none', display: 'block' }}>
-                    <div className="card" style={{ padding: 32, height: '100%', position: 'relative', overflow: 'hidden' }}>
-                      {s.image && (
-                        <div style={{ position: 'absolute', top: 0, right: 0, width: '40%', height: '100%', opacity: 0.1, backgroundImage: `url(${s.image})`, backgroundSize: 'cover', backgroundPosition: 'center', pointerEvents: 'none' }} />
-                      )}
-                      <div style={{ marginBottom: 20, position: 'relative', zIndex: 1 }}><ServiceIcon slug={s.icon || s.slug} /></div>
-                      <h3 style={{ fontSize: 22, marginBottom: 12, position: 'relative', zIndex: 1 }}>{title}</h3>
-                      {desc && <p style={{ fontSize: 14, color: 'var(--gray)', lineHeight: 1.65, marginBottom: 20, position: 'relative', zIndex: 1 }}>{desc}</p>}
-                      {features.slice(0,3).map((f, j) => (
-                        <div key={j} style={{ display: 'flex', alignItems: 'center', gap: 8, fontSize: 13, color: 'var(--gray2)', marginBottom: 6, position: 'relative', zIndex: 1 }}>
-                          <div style={{ width: 4, height: 4, borderRadius: '50%', background: 'var(--accent)', flexShrink: 0 }} />{f}
+                    <div className="card" style={{ padding: 0, height: '100%', position: 'relative', overflow: 'hidden', display: 'flex', flexDirection: 'column' }}>
+                      {s.image ? (
+                        <div style={{ width: '100%', height: 220, overflow: 'hidden' }}>
+                          <img src={s.image} alt={title} style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
                         </div>
-                      ))}
-                      <div style={{ marginTop: 24, color: 'var(--accent)', fontSize: 13, fontWeight: 600, display: 'flex', alignItems: 'center', gap: 6, position: 'relative', zIndex: 1 }}>
-                        {lang === 'ru' ? 'Подробнее' : 'Batafsil'} <ArrowRight size={14} />
+                      ) : (
+                        <div style={{ padding: '32px 32px 0' }}>
+                          <ServiceIcon slug={s.icon || s.slug} />
+                        </div>
+                      )}
+                      
+                      <div style={{ padding: 32, flex: 1, display: 'flex', flexDirection: 'column' }}>
+                        <h3 style={{ fontSize: 22, marginBottom: 12, position: 'relative', zIndex: 1 }}>{title}</h3>
+                        {desc && <p style={{ fontSize: 14, color: 'var(--gray)', lineHeight: 1.65, marginBottom: 20, position: 'relative', zIndex: 1 }}>{desc}</p>}
+                        {features.slice(0,3).map((f, j) => (
+                          <div key={j} style={{ display: 'flex', alignItems: 'center', gap: 8, fontSize: 13, color: 'var(--gray2)', marginBottom: 6, position: 'relative', zIndex: 1 }}>
+                            <div style={{ width: 4, height: 4, borderRadius: '50%', background: 'var(--accent)', flexShrink: 0 }} />{f}
+                          </div>
+                        ))}
+                        <div style={{ marginTop: 'auto', paddingTop: 24, color: 'var(--accent)', fontSize: 13, fontWeight: 600, display: 'flex', alignItems: 'center', gap: 6, position: 'relative', zIndex: 1 }}>
+                          {lang === 'ru' ? 'Подробнее' : 'Batafsil'} <ArrowRight size={14} />
+                        </div>
                       </div>
                     </div>
                   </Link>
