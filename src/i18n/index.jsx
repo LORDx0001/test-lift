@@ -1,9 +1,9 @@
 import { createContext, useContext, useState } from 'react';
-import { ru, uz } from './translations';
+import { ru, uz, en } from './translations';
 
 const I18nContext = createContext(null);
 
-const dict = { ru, uz };
+const dict = { ru, uz, en };
 
 export function I18nProvider({ children }) {
   const [lang, setLang] = useState('ru');

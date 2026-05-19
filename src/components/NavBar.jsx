@@ -22,7 +22,7 @@ export default function NavBar() {
     { href: '/services', label: t.nav.services },
     { href: '/projects', label: t.nav.projects },
     { href: '/about', label: t.nav.about },
-    { href: '/contact', label: t.nav.contact },
+    { href: '/#contact', label: t.nav.contact },
   ];
 
   const navStyle = {
@@ -57,7 +57,7 @@ export default function NavBar() {
           {/* Right: Lang + CTA */}
           <div style={{ display: 'flex', alignItems: 'center', gap: 12 }} className="desktop-nav">
             <div style={{ display: 'flex', border: '1px solid var(--border)', borderRadius: 4, overflow: 'hidden' }}>
-              {['ru','uz'].map(l => (
+              {['ru','uz','en'].map(l => (
                 <button key={l} onClick={() => setLang(l)} style={{
                   padding: '6px 12px', fontSize: 11, fontWeight: 700, letterSpacing: '0.1em',
                   textTransform: 'uppercase', cursor: 'pointer', border: 'none',
@@ -67,7 +67,7 @@ export default function NavBar() {
                 }}>{l}</button>
               ))}
             </div>
-            <Link to="/contact" className="btn btn-primary btn-sm">
+            <Link to="/#contact" className="btn btn-primary btn-sm">
               <Phone size={14} /> {lang === 'ru' ? 'Заявка' : 'Ariza'}
             </Link>
           </div>
@@ -103,7 +103,7 @@ export default function NavBar() {
           ))}
         </div>
         <div style={{ marginTop: 'auto', display: 'flex', gap: 8 }}>
-          {['ru','uz'].map(l => (
+          {['ru','uz','en'].map(l => (
             <button key={l} onClick={() => setLang(l)} style={{
               flex: 1, padding: '12px', fontSize: 13, fontWeight: 700, letterSpacing: '0.1em', textTransform: 'uppercase',
               border: '1px solid var(--border)', borderRadius: 4, cursor: 'pointer',

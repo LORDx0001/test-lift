@@ -229,3 +229,96 @@ export const uz = {
   },
   notFound: { title: '404', subtitle: 'Sahifa topilmadi', btn: 'Bosh sahifaga' },
 };
+export const en = {
+  nav: {
+    home: 'Home', services: 'Services', projects: 'Projects',
+    about: 'About', contact: 'Contact',
+  },
+  hero: {
+    label: 'Professional Engineering Company',
+    title: 'Reliability\non every\nlevel',
+    subtitle: 'SafeTech Engineering — full-cycle installation, technical supervision, and maintenance of elevator equipment.',
+    cta: 'Our Services',
+    ctaSecondary: 'Contact Us',
+  },
+  stats: {
+    label: 'Chosen by Professionals',
+    items: [
+      { value: '150+', label: 'Projects Completed' },
+      { value: '12', label: 'Years in Market' },
+      { value: '98%', label: 'Happy Clients' },
+      { value: '3', label: 'Core Directions' },
+    ],
+  },
+  services: {
+    label: 'What We Do',
+    title: 'Our Services',
+    subtitle: 'Full cycle of works with elevator and escalator equipment',
+    all: 'All Services',
+    items: [
+      { slug: 'montazh-liftov', title: 'Elevator Installation', desc: 'Supply, installation and commissioning of passenger and freight elevators.' },
+      { slug: 'spetsialnye-lifty', title: 'Special Elevators', desc: 'Hospital, panoramic, small freight and industrial lifts for any conditions.' },
+      { slug: 'eskalatoru', title: 'Escalators and Travelators', desc: 'Professional installation of escalators and moving walks for malls and airports.' },
+      { slug: 'tekhnadzor', title: 'Technical Supervision', desc: 'Independent installation control, technical inspection and certification.' },
+    ],
+  },
+  whyUs: {
+    label: 'Our Advantages',
+    title: 'Why Choose Us',
+    items: [
+      { title: 'Licenses and Permits', desc: 'All necessary regulatory documents for working with elevator equipment.' },
+      { title: '2-Year Warranty', desc: 'Warranty service for all performed installation works.' },
+      { title: '12 Years Experience', desc: 'More than a decade of implementing projects of various complexity.' },
+      { title: 'Expert Team', desc: 'Certified engineers with experience in CIS facilities.' },
+      { title: 'On-Time Delivery', desc: 'Clear planning and control of each installation stage.' },
+      { title: '24/7 Support', desc: 'Round-the-clock technical support and emergency site visits.' },
+    ],
+  },
+  cta: { title: 'Ready to discuss your project?', subtitle: 'Leave a request — we will contact you within the business day.', btn: 'Leave Request' },
+  about: {
+    label: 'About Us', title: 'SafeTech Engineering', subtitle: 'Professional Engineering Company',
+    story: 'Since 2012, SafeTech Engineering has been implementing projects for the installation, technical supervision and maintenance of elevator and escalator equipment.',
+    mission: 'Our mission is to provide safe and reliable vertical movement of people and cargo at facilities of any complexity.',
+    values: {
+      label: 'Our Values',
+      items: [
+        { title: 'Safety', desc: 'Strictest quality control and compliance with all regulatory requirements.' },
+        { title: 'Reliability', desc: 'We guarantee equipment operation in stated technical characteristics.' },
+        { title: 'Professionalism', desc: 'A team of certified engineers with continuous training.' },
+      ],
+    },
+    team: {
+      label: 'Our Team', title: 'Specialists',
+      items: [
+        { name: 'Alexey Petrov', role: 'Chief Engineer', exp: '15 years exp' },
+        { name: 'Dmitry Sidorov', role: 'Safety Inspector', exp: '10 years exp' },
+        { name: 'Igor Volkov', role: 'SVT Designer', exp: '8 years exp' },
+        { name: 'Sergey Kozlov', role: 'Installer', exp: '12 years exp' },
+      ],
+    },
+    certs: { label: 'Licenses and Certs', title: 'Documents' },
+  },
+  projects: {
+    label: 'Our Projects', title: 'Completed Projects', all: 'All Projects',
+    filters: ['All', 'Elevators', 'Special Lifts', 'Escalators'],
+    detail: 'Detail', specs: 'Technical Specs', services_used: 'Services Provided',
+  },
+  contact: {
+    label: 'Contact Us', title: 'Leave Request',
+    subtitle: 'Fill out the form — we will call you back within the business day.',
+    form: {
+      name: 'Your Name *', phone: 'Phone *', email: 'Email', service: 'Service',
+      message: 'Message', btn: 'Send Request',
+      success: 'Request sent! We will contact you shortly.',
+      error: 'Sending error. Please try again later.',
+      servicePlaceholder: 'Select service',
+    },
+    info: { phone: 'Phone', email: 'Email', address: 'Address', hours: 'Working Hours' },
+  },
+  footer: {
+    desc: 'Professional installation and technical supervision of elevator equipment.',
+    links: 'Navigation', contacts: 'Contacts', legal: 'Legal', privacy: 'Privacy',
+    copy: '© 2024 SafeTech Engineering',
+  },
+  notFound: { title: '404', subtitle: 'Page Not Found', btn: 'To Home' },
+};

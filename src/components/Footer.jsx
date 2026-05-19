@@ -11,7 +11,7 @@ export default function Footer({ settings }) {
     { href: '/services', label: t.nav.services },
     { href: '/projects', label: t.nav.projects },
     { href: '/about', label: t.nav.about },
-    { href: '/contact', label: t.nav.contact },
+    { href: '/#contact', label: t.nav.contact },
   ];
 
   return (

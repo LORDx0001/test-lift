@@ -8,9 +8,13 @@
   --accentL: #5AABFF;
   --white:   #FFFFFF;
   --offwhite:#EBF2FB;
+  --light:   #F8FAFC;
   --gray:    #6B82A0;
   --gray2:   #A8BDD4;
+  --text-dark: #0F172A;
+  --text-muted: #64748B;
   --border:  rgba(255,255,255,0.07);
+  --border-light: rgba(15, 23, 42, 0.08);
   --card:    rgba(255,255,255,0.03);
   --radius:  6px;
   --transition: 0.25s ease;

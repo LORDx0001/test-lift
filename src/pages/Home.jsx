@@ -1,8 +1,10 @@
+import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
-import { ArrowRight } from 'lucide-react';
+import { ArrowRight, Mail, Phone, CheckCircle, AlertCircle } from 'lucide-react';
 import { useI18n } from '../i18n';
 import { useInView, useCounter } from '../hooks';
 import { FadeUp, SectionLabel, AccentLine, ServiceIcon } from '../components/ui';
+import { endpoints } from '../api';
 import { CTABanner } from '../components/ui';
 
 // ─── Hero ───────────────────────────────────────────────────────────
@@ -103,7 +105,7 @@ function Stats() {
       <div className="container" ref={ref}>
         <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(160px, 1fr))', gap: 0 }}>
           {t.stats.items.map((s, i) => (
-            <div key={i} style={{ borderRight: i < t.stats.items.length - 1 ? '1px solid var(--border)' : 'none' }}>
+            <div key={i} style={{ borderRight: i < t.stats.items.length - 1 ? '1px solid var(--border)' : 'none', padding: '40px 0' }}>
               {inView && <StatItem value={s.value} label={s.label} />}
               {!inView && (
                 <div style={{ textAlign: 'center', padding: '24px 16px' }}>
@@ -119,8 +121,6 @@ function Stats() {
   );
 }
 
-import { useState, useEffect } from 'react';
-import { endpoints } from '../api';
 
 // ─── Services Preview ────────────────────────────────────────────────
 function ServicesPreview() {
@@ -132,13 +132,13 @@ function ServicesPreview() {
   }, []);
 
   return (
-    <section className="section" style={{ background: 'var(--navy)' }}>
+    <section className="section" style={{ background: 'var(--white)' }}>
       <div className="container">
         <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-end', marginBottom: 56, flexWrap: 'wrap', gap: 24 }}>
           <div>
             <FadeUp><SectionLabel>{t.services.label}</SectionLabel></FadeUp>
-            <FadeUp delay={0.1}><h2 style={{ fontSize: 'clamp(2rem, 4vw, 3rem)', margin: 0 }}>{t.services.title}</h2></FadeUp>
-            <FadeUp delay={0.15}><p style={{ color: 'var(--gray)', marginTop: 12, fontSize: 15 }}>{t.services.subtitle}</p></FadeUp>
+            <FadeUp delay={0.1}><h2 style={{ fontSize: 'clamp(2rem, 4vw, 3rem)', margin: 0, color: 'var(--text-dark)' }}>{t.services.title}</h2></FadeUp>
+            <FadeUp delay={0.15}><p style={{ color: 'var(--text-muted)', marginTop: 12, fontSize: 15 }}>{t.services.subtitle}</p></FadeUp>
           </div>
           <FadeUp delay={0.2}>
             <Link to="/services" className="btn btn-ghost">
@@ -147,7 +147,7 @@ function ServicesPreview() {
           </FadeUp>
         </div>
 
-        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(260px, 1fr))', gap: 1, background: 'var(--border)' }}>
+        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(260px, 1fr))', gap: 24 }}>
           {services.map((s, i) => {
             const title = s[`title_${lang}`] || s.title_ru;
             const desc = s[`desc_${lang}`] || s.desc_ru;
@@ -155,17 +155,19 @@ function ServicesPreview() {
               <FadeUp key={s.slug || i} delay={i * 0.1}>
                 <Link to={`/services/${s.slug}`} style={{ textDecoration: 'none', display: 'block', height: '100%' }}>
                   <div style={{
-                    background: 'var(--navy2)',
-                    borderBottom: '3px solid transparent',
-                    transition: 'all 0.25s',
+                    background: 'var(--light)',
+                    border: '1px solid var(--border-light)',
+                    borderRadius: '12px',
+                    transition: 'all 0.3s',
                     height: '100%',
                     position: 'relative',
                     overflow: 'hidden',
                     display: 'flex',
-                    flexDirection: 'column'
+                    flexDirection: 'column',
+                    boxShadow: '0 4px 12px rgba(0,0,0,0.03)'
                   }}
-                    onMouseEnter={e => { e.currentTarget.style.background = 'var(--navy3)'; e.currentTarget.style.borderBottomColor = 'var(--accent)'; e.currentTarget.style.transform = 'translateY(-4px)'; }}
-                    onMouseLeave={e => { e.currentTarget.style.background = 'var(--navy2)'; e.currentTarget.style.borderBottomColor = 'transparent'; e.currentTarget.style.transform = 'translateY(0)'; }}
+                    onMouseEnter={e => { e.currentTarget.style.borderColor = 'var(--accent)'; e.currentTarget.style.transform = 'translateY(-4px)'; e.currentTarget.style.boxShadow = '0 12px 24px rgba(0,0,0,0.08)'; }}
+                    onMouseLeave={e => { e.currentTarget.style.borderColor = 'var(--border-light)'; e.currentTarget.style.transform = 'translateY(0)'; e.currentTarget.style.boxShadow = '0 4px 12px rgba(0,0,0,0.03)'; }}
                   >
                     {s.image ? (
                       <div style={{ width: '100%', height: 180, overflow: 'hidden' }}>
@@ -178,10 +180,10 @@ function ServicesPreview() {
                     )}
                     
                     <div style={{ padding: 32, flex: 1, display: 'flex', flexDirection: 'column' }}>
-                      <h3 style={{ fontSize: 20, marginBottom: 12, color: 'var(--white)', position: 'relative', zIndex: 1 }}>{title}</h3>
-                      {desc && <p style={{ fontSize: 14, color: 'var(--gray)', lineHeight: 1.6, position: 'relative', zIndex: 1, flex: 1 }}>{desc}</p>}
+                      <h3 style={{ fontSize: 20, marginBottom: 12, color: 'var(--text-dark)', position: 'relative', zIndex: 1 }}>{title}</h3>
+                      {desc && <p style={{ fontSize: 14, color: 'var(--text-muted)', lineHeight: 1.6, position: 'relative', zIndex: 1, flex: 1 }}>{desc}</p>}
                       <div style={{ marginTop: 24, display: 'flex', alignItems: 'center', gap: 8, color: 'var(--accent)', fontSize: 13, fontWeight: 500, position: 'relative', zIndex: 1 }}>
-                        {lang === 'ru' ? 'Подробнее' : 'Batafsil'} <ArrowRight size={14} />
+                        {lang === 'ru' ? 'Подробнее' : (lang === 'uz' ? 'Batafsil' : 'Detail')} <ArrowRight size={14} />
                       </div>
                     </div>
                   </div>
@@ -200,26 +202,26 @@ function WhyUs() {
   const { t } = useI18n();
   const icons = ['🏛️','🛡️','📅','👷','⏱️','🔧'];
   return (
-    <section className="section" style={{ background: 'var(--navy2)' }} id="why-us">
+    <section className="section" style={{ background: 'var(--navy)' }} id="why-us">
       <div className="container">
         <div style={{ textAlign: 'center', marginBottom: 56 }}>
           <FadeUp><SectionLabel>{t.whyUs.label}</SectionLabel></FadeUp>
-          <FadeUp delay={0.1}><h2 style={{ fontSize: 'clamp(2rem, 4vw, 3rem)' }}>{t.whyUs.title}</h2></FadeUp>
+          <FadeUp delay={0.1}><h2 style={{ fontSize: 'clamp(2rem, 4vw, 3rem)', color: 'var(--white)' }}>{t.whyUs.title}</h2></FadeUp>
         </div>
         <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))', gap: 24 }}>
           {t.whyUs.items.map((item, i) => (
             <FadeUp key={i} delay={i * 0.08}>
               <div style={{
-                background: 'var(--navy3)', border: '1px solid var(--border)',
-                borderRadius: 'var(--radius)', padding: 28, height: '100%',
-                transition: 'all 0.25s',
+                background: 'var(--navy2)', border: '1px solid var(--border)',
+                borderRadius: '12px', padding: 32, height: '100%',
+                transition: 'all 0.3s ease',
               }}
-                onMouseEnter={e => { e.currentTarget.style.borderColor = 'rgba(43,143,255,0.3)'; e.currentTarget.style.boxShadow = 'var(--shadow-accent)'; }}
-                onMouseLeave={e => { e.currentTarget.style.borderColor = 'var(--border)'; e.currentTarget.style.boxShadow = 'none'; }}
+                onMouseEnter={e => { e.currentTarget.style.borderColor = 'var(--accent)'; e.currentTarget.style.transform = 'translateY(-5px)'; e.currentTarget.style.boxShadow = 'var(--shadow-accent)'; }}
+                onMouseLeave={e => { e.currentTarget.style.borderColor = 'var(--border)'; e.currentTarget.style.transform = 'translateY(0)'; e.currentTarget.style.boxShadow = 'none'; }}
               >
-                <div style={{ fontSize: 28, marginBottom: 16 }}>{icons[i]}</div>
-                <h3 style={{ fontSize: 18, marginBottom: 10, color: 'var(--white)' }}>{item.title}</h3>
-                <p style={{ fontSize: 14, color: 'var(--gray)', lineHeight: 1.6 }}>{item.desc}</p>
+                <div style={{ fontSize: 32, marginBottom: 20 }}>{icons[i]}</div>
+                <h3 style={{ fontSize: 20, marginBottom: 12, color: 'var(--white)' }}>{item.title}</h3>
+                <p style={{ fontSize: 15, color: 'var(--gray2)', lineHeight: 1.6 }}>{item.desc}</p>
               </div>
             </FadeUp>
           ))}
@@ -229,16 +231,161 @@ function WhyUs() {
   );
 }
 
+
+// ─── Contact Section ────────────────────────────────────────────────
+function ContactSection() {
+  const { t, lang } = useI18n();
+  const [data, setData] = useState({ name: '', phone: '', message: '' });
+  const [status, setStatus] = useState(null);
+
+  const submit = async (e) => {
+    e.preventDefault();
+    if (!data.name || !data.phone) return;
+    setStatus('loading');
+    try {
+      await endpoints.contact({ 
+        name: data.name, 
+        phone: data.phone, 
+        details: data.message || 'Заявка с главной страницы' 
+      });
+      setStatus('success');
+      setData({ name: '', phone: '', message: '' });
+      setTimeout(() => setStatus(null), 5000);
+    } catch {
+      setStatus('error');
+      setTimeout(() => setStatus(null), 5000);
+    }
+  };
+
+  return (
+    <section className="section" style={{ 
+      background: 'var(--white)', 
+      borderTop: '1px solid var(--border-light)',
+      padding: '140px 0'
+    }} id="contact">
+      <div className="container">
+        <div style={{ 
+          display: 'grid', 
+          gridTemplateColumns: '1fr 1fr', 
+          gap: '80px', 
+          alignItems: 'start',
+          maxWidth: '1100px',
+          margin: '0 auto'
+        }} className="contact-grid">
+          
+          <div style={{ position: 'sticky', top: 120 }}>
+            <FadeUp>
+              <SectionLabel>{t.contact.label}</SectionLabel>
+              {/* Removed CTA title and subtitle as requested */}
+              
+              <div style={{ display: 'grid', gridTemplateColumns: '1fr', gap: 32, marginTop: 40 }}>
+                <div style={{ display: 'flex', alignItems: 'center', gap: 16 }}>
+                  <div style={{ width: 48, height: 48, background: 'var(--light)', borderRadius: '50%', display: 'flex', alignItems: 'center', justifyContent: 'center', color: 'var(--accent)' }}>
+                    <Mail size={20} />
+                  </div>
+                  <div>
+                    <div style={{ fontSize: 12, fontWeight: 700, color: 'var(--accent)', textTransform: 'uppercase', marginBottom: 2 }}>Email</div>
+                    <div style={{ fontSize: 18, color: 'var(--text-dark)', fontWeight: 500 }}>info@safetech.uz</div>
+                  </div>
+                </div>
+                <div style={{ display: 'flex', alignItems: 'center', gap: 16 }}>
+                  <div style={{ width: 48, height: 48, background: 'var(--light)', borderRadius: '50%', display: 'flex', alignItems: 'center', justifyContent: 'center', color: 'var(--accent)' }}>
+                    <Phone size={20} />
+                  </div>
+                  <div>
+                    <div style={{ fontSize: 12, fontWeight: 700, color: 'var(--accent)', textTransform: 'uppercase', marginBottom: 2 }}>Телефон</div>
+                    <div style={{ fontSize: 18, color: 'var(--text-dark)', fontWeight: 500 }}>+998 71 000-00-00</div>
+                  </div>
+                </div>
+              </div>
+            </FadeUp>
+          </div>
+
+          <FadeUp delay={0.1}>
+            <div style={{ 
+              background: 'var(--light)', 
+              padding: '48px', 
+              borderRadius: '24px', 
+              border: '1px solid var(--border-light)',
+              boxShadow: '0 20px 50px rgba(0,0,0,0.05)'
+            }}>
+              <form onSubmit={submit} style={{ display: 'flex', flexDirection: 'column', gap: 24 }}>
+                <div>
+                  <label style={{ display: 'block', fontSize: 14, fontWeight: 600, color: 'var(--text-dark)', marginBottom: 8 }}>{t.contact.form.name}</label>
+                  <input 
+                    type="text" 
+                    placeholder="Ваше имя" 
+                    className="form-input" 
+                    value={data.name}
+                    onChange={e => setData(d => ({ ...d, name: e.target.value }))}
+                    required
+                    style={{ background: 'var(--white)', border: '1px solid var(--border-light)', color: 'var(--text-dark)', padding: '16px 20px' }}
+                  />
+                </div>
+                <div>
+                  <label style={{ display: 'block', fontSize: 14, fontWeight: 600, color: 'var(--text-dark)', marginBottom: 8 }}>{t.contact.form.phone}</label>
+                  <input 
+                    type="tel" 
+                    placeholder="+998 90..." 
+                    className="form-input" 
+                    value={data.phone}
+                    onChange={e => setData(d => ({ ...d, phone: e.target.value }))}
+                    required
+                    style={{ background: 'var(--white)', border: '1px solid var(--border-light)', color: 'var(--text-dark)', padding: '16px 20px' }}
+                  />
+                </div>
+
+                <div>
+                  <label style={{ display: 'block', fontSize: 14, fontWeight: 600, color: 'var(--text-dark)', marginBottom: 8 }}>
+                    {t.contact.form.message}
+                  </label>
+                  <textarea 
+                    placeholder={lang === 'ru' ? 'Расскажите кратко о вашей задаче...' : (lang === 'uz' ? 'Vazifangiz haqida qisqacha gapiring...' : 'Tell us briefly about your task...')} 
+                    className="form-input" 
+                    rows={5}
+                    value={data.message}
+                    onChange={e => setData(d => ({ ...d, message: e.target.value }))}
+                    style={{ background: 'var(--white)', border: '1px solid var(--border-light)', color: 'var(--text-dark)', padding: '16px 20px', resize: 'none' }}
+                  />
+                </div>
+                
+                <button type="submit" className="btn btn-primary" style={{ height: 60, marginTop: 10, fontSize: 16, width: '100%', justifyContent: 'center', borderRadius: '12px' }} disabled={status === 'loading'}>
+                  {status === 'loading' ? '...' : t.contact.form.btn}
+                </button>
+
+                {status === 'success' && (
+                  <div style={{ marginTop: 10, color: '#059669', fontSize: 14, display: 'flex', alignItems: 'center', gap: 8, background: '#ECFDF5', padding: '12px', borderRadius: '10px', border: '1px solid #A7F3D0' }}>
+                    <CheckCircle size={18} /> {t.contact.form.success}
+                  </div>
+                )}
+                {status === 'error' && (
+                  <div style={{ marginTop: 10, color: '#DC2626', fontSize: 14, display: 'flex', alignItems: 'center', gap: 8, background: '#FEF2F2', padding: '12px', borderRadius: '10px', border: '1px solid #FECACA' }}>
+                    <AlertCircle size={18} /> {t.contact.form.error}
+                  </div>
+                )}
+              </form>
+            </div>
+          </FadeUp>
+        </div>
+      </div>
+      <style>{`
+        @media (max-width: 900px) {
+          .contact-grid { grid-template-columns: 1fr !important; gap: 56px !important; }
+        }
+      `}</style>
+    </section>
+  );
+}
+
 // ─── Home Page ───────────────────────────────────────────────────────
 export default function Home() {
-  const { t } = useI18n();
   return (
     <>
       <Hero />
       <Stats />
       <ServicesPreview />
       <WhyUs />
-      <CTABanner title={t.cta.title} subtitle={t.cta.subtitle} btnText={t.cta.btn} onClick={() => window.location.href = '/contact'} />
+      <ContactSection />
     </>
   );
 }

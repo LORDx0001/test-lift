@@ -7,14 +7,20 @@ import Home from './pages/Home';
 import { ServicesPage, ServiceDetail } from './pages/Services';
 import Projects from './pages/Projects';
 import About from './pages/About';
-import Contact from './pages/Contact';
 import NotFound from './pages/NotFound';
 import './styles/globals.css';
 
 // Scroll to top on navigation
 function ScrollReset() {
-  const { pathname } = useLocation();
-  useEffect(() => { window.scrollTo(0, 0); }, [pathname]);
+  const { pathname, hash } = useLocation();
+  useEffect(() => {
+    if (hash) {
+      const el = document.getElementById(hash.slice(1));
+      if (el) el.scrollIntoView({ behavior: 'smooth' });
+    } else {
+      window.scrollTo(0, 0);
+    }
+  }, [pathname, hash]);
   return null;
 }
 
@@ -59,7 +65,6 @@ function AppContent() {
             <Route path="/services/:slug" element={<ServiceDetailRoute />} />
             <Route path="/projects" element={<Projects />} />
             <Route path="/about" element={<About />} />
-            <Route path="/contact" element={<Contact settings={settings} />} />
             <Route path="*" element={<NotFound />} />
           </Routes>
         </Suspense>
