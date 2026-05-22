@@ -1,5 +1,5 @@
 import { useEffect, useState, Suspense } from "react";
-import { Routes, Route, useNavigate, useParams, useLocation } from "react-router-dom";
+import { BrowserRouter, Routes, Route, useNavigate, useParams, useLocation } from "react-router-dom";
 import { I18nProvider, useI18n } from "./i18n";
 import Header from "./components/Header";
 import Hero from "./components/Hero";
@@ -232,8 +232,10 @@ function AppContent() {
 
 export default function App() {
   return (
-    <I18nProvider>
-      <AppContent />
-    </I18nProvider>
+    <BrowserRouter>
+      <I18nProvider>
+        <AppContent />
+      </I18nProvider>
+    </BrowserRouter>
   );
 }
