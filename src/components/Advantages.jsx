@@ -1,5 +1,6 @@
 import { ShieldAlert, Settings, FileSpreadsheet, Clock, Award, Compass, ShieldCheck } from "lucide-react";
 import { useI18n } from "../i18n";
+import { getLocalized } from "../utils/localize";
 
 function getAdvantageIcon(name) {
   switch (name) {
@@ -20,87 +21,48 @@ function getAdvantageIcon(name) {
   }
 }
 
-export default function Advantages() {
-  const { lang, t } = useI18n();
+export default function Advantages({ advantages, advantageCards }) {
+  const { lang } = useI18n();
 
-  const advantagesList = [
-    {
-      id: "safety",
-      title: lang === 'uz' ? "Birinchi navbatda xavfsizlik" : lang === 'en' ? "Safety Above All" : "Безопасность превыше всего",
-      description: lang === 'uz' ? "Ko'p bosqichli sifat tizimi: sertifikatlangan tezlik cheklovchilari, silliq tormozlash moslamalari, to'liq bo'yli eshik foto-pardalari." : lang === 'en' ? "Multi-level quality system: certified speed governors, progressive safety gears, full-height light curtains." : "Многоуровневая система качества: сертифицированные ограничители скорости, ловители мгновенного и плавного торможения, фотозавесы дверей по всей высоте.",
-      iconName: "ShieldAlert"
-    },
-    {
-      id: "parts",
-      title: lang === 'uz' ? "Original ehtiyot qismlar" : lang === 'en' ? "Original Spare Parts" : "Оригинальные запчасти",
-      description: lang === 'uz' ? "Wittur, Kleemann, Otis distribyutorlari bilan to'g'ridan-to'g'ri shartnomalar. Toshkentdagi omborimizdan vositachilarsiz yetkazib berish." : lang === 'en' ? "Direct partnerships with distributors of Wittur, Kleemann, Otis. Supplied directly from our Tashkent warehouse with no markups." : "Прямые партнерские контракты с дистрибьюторами Wittur, Kleemann, Otis. Поставка напрямую со склада в Ташкенте без наценок посредников.",
-      iconName: "Settings"
-    },
-    {
-      id: "gost",
-      title: lang === 'uz' ? "Qat'iy ravishda GOST va me'yorlar asosida" : lang === 'en' ? "Strictly by GOST & Uz Standard" : "Строго по ГОСТ и нормам РУз",
-      description: lang === 'uz' ? "Barcha ishlar O'zbekiston Respublikasining ShNK, KMK va EN-81 xalqaro texnik ko'rsatmalari talablariga muvofiq amalga oshiriladi." : lang === 'en' ? "All engineering operations strictly adhere to ShNK, KMK of Uzbekistan and international technical regulations EN-81." : "Все работы осуществляются в жестком соответствии с ШНК, КМК Республики Узбекистан и международными техническими инструкциями EN-81.",
-      iconName: "FileSpreadsheet"
-    },
-    {
-      id: "emergency",
-      title: lang === 'uz' ? "Favqulodda xizmat 24/7" : lang === 'en' ? "24/7 Emergency Service" : "Аварийная служба 24/7",
-      description: lang === 'uz' ? "Toshkentning barcha tumanlarida tunu-kun navbatchilik brigadalari. Yo'lovchini qutqarish uchun yetib borish vaqti — 25 daqiqagacha." : lang === 'en' ? "Mobile engineering dispatch units on standby in Tashkent 24/7. Average rescue arrival response is within 25 minutes." : "Мобильные инженерные бригады дежурят круглосуточно во всех районах Ташкента. Среднее время прибытия для деблокирования — 25 минут.",
-      iconName: "Clock"
-    },
-    {
-      id: "engineers",
-      title: lang === 'uz' ? "Sertifikatlangan muhandislar" : lang === 'en' ? "Certified Engineers" : "Сертифицированные инженеры",
-      description: lang === 'uz' ? "Bizning barcha sozlovchilarimiz sanoat xavfsizligi assotsiatsiyalarida har yili attestatsiyadan o'tib, zavodlarda stajirovka o'taydilar." : lang === 'en' ? "All our installation and debugging engineers undergo annual safety recertifications and training at manufacturers." : "Все наши наладчики и конструкторы проходят ежегодную аттестацию в ассоциациях промышленной безопасности и стажировки у производителей.",
-      iconName: "Award"
-    },
-    {
-      id: "flexibility",
-      title: lang === 'uz' ? "Individual muhandislik" : lang === 'en' ? "Custom Tailored Engineering" : "Индивидуальный инжиниринг",
-      description: lang === 'uz' ? "Nostandart kabinalarni loyihalashtiramiz, tarixiy va rekonstruksiya qilinadigan ob'yektlarning murakkab o'lchamlariga moslashtiramiz." : lang === 'en' ? "We design custom cabins, adaptation for highly tight non-standard shafts in historical buildings or renovated commercial spots." : "Проектируем нестандартные кабины, подстраиваемся под сложные габариты существующих шахт исторических зданий и реконструируемых объектов.",
-      iconName: "Compass"
-    }
-  ];
+  if (!advantageCards || advantageCards.length === 0) return null;
+
+  const currentMiniTitle = getLocalized(advantages, "mini_title", lang) || (lang === 'uz' ? "🛡️ Nima uchun biz" : lang === 'en' ? "🛡️ Why Us" : "🛡️ Почему выбирают нас");
+  const currentTitle = getLocalized(advantages, "title", lang) || (lang === 'uz' ? "Vaqt sinovidan o'tgan ishonchlilik standartlari" : lang === 'en' ? "Time-tested Standards of Safety & Reliability" : "Стандарты надежности, проверенные временем");
+  const currentDesc = getLocalized(advantages, "desc", lang) || (lang === 'uz' ? "Safetech Engineering o'z obro'sini o'rnatilgan har bir rels va dasturlashtirilgan har bir kontroller sifatiga asoslaydi." : lang === 'en' ? "Safetech Engineering builds its corporate reputation on uncompromising quality of every rail installed and every controller programmed." : "Safetech Engineering строит свою репутацию на бескомпромиссном качестве каждой смонтированной рельсы и каждого запрограммированного контроллера.");
 
   return (
     <section id="advantages" className="py-20 bg-white scroll-mt-16">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div className="max-w-7xl mx-auto px-2.5 sm:px-6 lg:px-8">
         
         {/* Title */}
         <div className="text-center max-w-3xl mx-auto mb-16 space-y-4">
           <span className="inline-flex items-center gap-2 bg-amber-50 text-amber-950 text-xs font-bold px-3 py-1 rounded-md uppercase tracking-wider">
-            🛡️ {lang === 'uz' ? "Nima uchun biz" : lang === 'en' ? "Why Us" : "Почему выбирают нас"}
+            {currentMiniTitle}
           </span>
           <h2 className="text-3xl md:text-4xl font-display font-extrabold text-slate-900 tracking-tight leading-tight">
-            {lang === 'uz' ? "Vaqt sinovidan o'tgan ishonchlilik standartlari" : lang === 'en' ? "Time-tested Standards of Safety & Reliability" : "Стандарты надежности, проверенные временем"}
+            {currentTitle}
           </h2>
           <p className="text-sm md:text-base text-slate-500 font-sans font-light">
-            {lang === 'uz' ? (
-              <>Safetech Engineering o'z obro'sini o'rnatilgan har bir rels va dasturlashtirilgan har bir kontroller sifatiga asoslaydi.</>
-            ) : lang === 'en' ? (
-              <>Safetech Engineering builds its corporate reputation on uncompromising quality of every rail installed and every controller programmed.</>
-            ) : (
-              <>Safetech Engineering строит свою репутацию на бескомпромиссном качестве каждой смонтированной рельсы и каждого запрограммированного контроллера.</>
-            )}
+            {currentDesc}
           </p>
         </div>
 
         {/* Bento grid layout */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-          {advantagesList.map((adv) => (
+          {advantageCards.map((adv) => (
             <div 
               key={adv.id}
               className="bg-slate-50 border border-slate-100 p-6 md:p-8 rounded-2xl flex flex-col items-start gap-4 hover:shadow-lg hover:bg-white hover:border-slate-200/80 transition-all duration-300"
             >
               <div className="w-12 h-12 rounded-xl bg-white border border-slate-200/60 shadow-sm flex items-center justify-center shrink-0">
-                {getAdvantageIcon(adv.iconName)}
+                {getAdvantageIcon(adv.icon)}
               </div>
               <div className="space-y-2 text-left">
                 <h3 className="font-display font-bold text-lg text-slate-900 leading-snug">
-                  {adv.title}
+                  {getLocalized(adv, "title", lang)}
                 </h3>
                 <p className="text-slate-500 text-xs sm:text-sm leading-relaxed font-sans font-light">
-                  {adv.description}
+                  {getLocalized(adv, "desc", lang)}
                 </p>
               </div>
             </div>

@@ -111,7 +111,7 @@ export default function ServicePage({ service, onBack, onSuccessSubmit, phones }
       transition={{ duration: 0.35 }}
       className="min-h-screen bg-slate-50 pt-32 pb-24"
     >
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div className="max-w-7xl mx-auto px-2.5 sm:px-6 lg:px-8">
         
         {/* Back Button */}
         <button

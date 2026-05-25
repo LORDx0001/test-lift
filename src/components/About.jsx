@@ -3,33 +3,14 @@ import { useI18n } from "../i18n";
 import { getLocalized } from "../utils/localize";
 
 export default function About({ experience, experienceCards }) {
-  const { lang, t } = useI18n();
-
-  const fallbackHighlights = [
-    {
-      title: lang === 'uz' ? "O'zbekiston bozorida 11+ yil" : lang === 'en' ? "11+ Years on Uzbekistan Market" : "11+ лет на рынке Узбекистана",
-      desc: lang === 'uz' ? "2015-yilda tashkil etilgan kompaniya kichik laboratoriyadan yirik muhandislik ekotizimigacha rivojlandi." : lang === 'en' ? "Founded in 2015, the company grew from a small workshop into a major engineering ecosystem." : "Основанная в 2015 году, компания выросла из небольшой монтажной лаборатории в крупную инжиниринговую экосистему."
-    },
-    {
-      title: lang === 'uz' ? "Muhandislarning malakasi" : lang === 'en' ? "Engineers Qualification" : "Квалификация инженеров",
-      desc: lang === 'uz' ? "Barcha xodimlar Yevropa va Osiyo zavodlarida muntazam o'qitilib, sanoat xavfsizligi litsenziyalariga ega." : lang === 'en' ? "All staff undergo regular training at European and Asian factories, holding state safety licenses." : "Весь персонал регулярно обучается на учебных базах европейских и азиатских заводов, имея лицензии Ростех/Узгостехнадзора."
-    },
-    {
-      title: lang === 'uz' ? "Davlat akkreditatsiyasi" : lang === 'en' ? "State Accreditation" : "Государственная аккредитация",
-      desc: lang === 'uz' ? "Alohida xavfli balandlikdagi ishlarni bajarish uchun barcha zarur ruxsatnomalar, SRO sertifikatlari va litsenziyalarga egamiz." : lang === 'en' ? "We hold all necessary permits, SRO certificates, and state licenses to perform high-risk elevator tasks." : "Обладаем всеми необходимыми свидетельствами, допусками СРО и гос-лицензиями на проведение особо опасных высотных работ."
-    },
-    {
-      title: lang === 'uz' ? "Tizimli yondashuv" : lang === 'en' ? "Integrated Approach" : "Комплексный подход",
-      desc: lang === 'uz' ? "Ko'tarish balandligini loyihalashdan tortib, tunu-kun favqulodda dispetcherlik nazoratigacha xizmat ko'rsatamiz." : lang === 'en' ? "From pre-project height analysis and technical task design to continuous 24/7 emergency support." : "От предпроектного анализа высоты подъема и разработки ТЗ до регулярного круглосуточного аварийного прикрытия."
-    }
-  ];
+  const { lang } = useI18n();
 
   const highlights = experienceCards && experienceCards.length > 0
     ? experienceCards.map((card) => ({
         title: getLocalized(card, "title", lang),
         desc: getLocalized(card, "desc", lang)
       }))
-    : fallbackHighlights;
+    : [];
 
   const currentMiniTitle = getLocalized(experience, "mini_title", lang) || (lang === 'uz' ? "👷 Biz haqimizda" : lang === 'en' ? "👷 About Us" : "👷 О компании");
   const currentTitle = getLocalized(experience, "title", lang) || "Safetech Engineering — Высокие стандарты лифтовой индустрии";
@@ -37,7 +18,7 @@ export default function About({ experience, experienceCards }) {
 
   return (
     <section id="about" className="py-20 bg-white relative overflow-hidden scroll-mt-16">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+      <div className="max-w-7xl mx-auto px-2.5 sm:px-6 lg:px-8 relative z-10">
         
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
           

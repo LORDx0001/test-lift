@@ -58,7 +58,7 @@ export default function Header({ onOpenCallback, onHomeReset, forceSolidBg = fal
             : "bg-slate-950/80 backdrop-blur-sm md:bg-transparent py-4 md:py-6"
         }`}
       >
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex justify-between items-center">
+        <div className="max-w-7xl mx-auto px-2.5 sm:px-6 lg:px-8 flex justify-between items-center">
           {/* Logo */}
           <a
             href="#"
@@ -79,12 +79,12 @@ export default function Header({ onOpenCallback, onHomeReset, forceSolidBg = fal
                 <div className="absolute inset-0 rounded-lg border border-white/20 scale-110 group-hover:scale-125 transition-transform duration-300"></div>
               </div>
             )}
-            <div>
-              <span className="font-display font-extrabold text-xl tracking-tight text-white block">
+            <div className="text-left">
+              <span className="font-display font-extrabold text-base sm:text-lg lg:text-xl tracking-tight text-white block leading-tight">
                 {currentBrandName.toUpperCase()}
-                <span className="text-amber-500 font-medium text-sm ml-1 tracking-widest uppercase">ENGINEERING</span>
+                <span className="text-amber-500 font-semibold text-[11px] sm:text-xs lg:text-sm ml-1 tracking-wider uppercase">ENGINEERING</span>
               </span>
-              <span className="text-[9px] text-slate-400 block tracking-wider -mt-1 font-mono uppercase">
+              <span className="text-[8px] sm:text-[9px] text-slate-400 block tracking-wider font-mono uppercase leading-tight mt-0.5">
                 {lang === 'uz' ? 'Toshkentda liftlar & eskalatorlar' : lang === 'en' ? 'Elevators & escalators in Tashkent' : 'Лифты & Эскалаторы в Ташкенте'}
               </span>
             </div>
@@ -164,32 +164,9 @@ export default function Header({ onOpenCallback, onHomeReset, forceSolidBg = fal
 
           {/* Mobile menu trigger */}
           <div className="flex md:hidden items-center gap-2">
-            {/* Language Toggle for Mobile */}
-            <div className="flex items-center bg-slate-800 rounded-lg p-0.5 border border-slate-700">
-              {["ru", "uz", "en"].map((l) => (
-                <button
-                  key={l}
-                  onClick={() => setLang(l)}
-                  className={`px-2 py-1 text-[10px] font-bold rounded uppercase transition-colors ${
-                    lang === l ? "bg-primary-600 text-white" : "text-slate-400 hover:text-white"
-                  }`}
-                >
-                  {l}
-                </button>
-              ))}
-            </div>
-
-            <a
-              href="https://t.me/bexruz_toj"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="bg-sky-500 text-white p-2 rounded-full"
-            >
-              <MessageSquare className="w-4 h-4" />
-            </a>
             <button
               onClick={() => setIsOpen(!isOpen)}
-              className="text-slate-300 hover:text-white p-2 focus:outline-none cursor-pointer"
+              className="text-slate-300 hover:text-white p-2 focus:outline-none cursor-pointer rounded-lg hover:bg-white/5 transition-colors"
               aria-label="Toggle Menu"
             >
               {isOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
@@ -206,9 +183,10 @@ export default function Header({ onOpenCallback, onHomeReset, forceSolidBg = fal
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -20 }}
             transition={{ duration: 0.25 }}
-            className="fixed inset-0 top-[60px] bg-slate-950/98 backdrop-blur-xl z-30 md:hidden flex flex-col justify-between p-6 border-b border-primary-900"
+            className="fixed inset-0 top-[60px] bg-slate-950/98 backdrop-blur-xl z-30 md:hidden flex flex-col justify-between p-6 border-b border-primary-900 overflow-y-auto"
           >
-            <div className="flex flex-col gap-4 mt-4">
+            {/* Nav links list */}
+            <div className="flex flex-col gap-3 mt-2">
               {navLinks.map((link, idx) => (
                 <motion.button
                   initial={{ opacity: 0, x: -10 }}
@@ -216,20 +194,57 @@ export default function Header({ onOpenCallback, onHomeReset, forceSolidBg = fal
                   transition={{ delay: idx * 0.05 }}
                   key={link.name}
                   onClick={() => handleLinkClick(link.href)}
-                  className="text-left font-display font-semibold text-lg text-slate-200 hover:text-amber-500 py-2 border-b border-white/5 cursor-pointer"
+                  className="text-left font-display font-semibold text-base text-slate-200 hover:text-amber-500 py-2 border-b border-white/5 cursor-pointer"
                 >
                   {link.name}
                 </motion.button>
               ))}
             </div>
 
-            <div className="flex flex-col gap-4 mb-10">
-              <div className="bg-slate-900 p-4 rounded-lg border border-primary-800">
+            {/* Language & Telegram controls */}
+            <div className="flex flex-col gap-4 my-6">
+              {/* Language Switcher */}
+              <div className="flex flex-col gap-1.5 text-left">
+                <span className="text-[10px] text-slate-400 font-mono uppercase tracking-widest block font-semibold">
+                  {lang === 'uz' ? "Tilni tanlang" : lang === 'en' ? "Select Language" : "Выбор языка"}
+                </span>
+                <div className="flex bg-slate-900 rounded-xl p-1 border border-slate-800">
+                  {["ru", "uz", "en"].map((l) => (
+                    <button
+                      key={l}
+                      onClick={() => setLang(l)}
+                      className={`flex-1 py-2 text-xs font-bold rounded-lg uppercase transition-all duration-200 ${
+                        lang === l ? "bg-primary-600 text-white shadow-lg shadow-primary-900/10" : "text-slate-400 hover:text-white"
+                      }`}
+                    >
+                      {l}
+                    </button>
+                  ))}
+                </div>
+              </div>
+
+              {/* Social CTA */}
+              <div className="flex items-center gap-3">
+                <a
+                  href="https://t.me/bexruz_toj"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="flex-1 bg-sky-650 hover:bg-sky-600 text-white py-3 rounded-xl transition-all duration-200 text-xs font-bold flex items-center justify-center gap-2 border border-sky-500/20"
+                >
+                  <MessageSquare className="w-4 h-4 text-white" />
+                  {lang === 'uz' ? "Telegramda bog'lanish" : lang === 'en' ? "Write in Telegram" : "Связаться в Telegram"}
+                </a>
+              </div>
+            </div>
+
+            {/* Call / Dispatch CTA */}
+            <div className="flex flex-col gap-3 mb-6">
+              <div className="bg-slate-900 p-4.5 rounded-xl border border-primary-900/50 text-left">
                 <span className="block text-slate-400 text-[10px] uppercase tracking-wider font-mono mb-1">
                   {lang === 'uz' ? 'Favqulodda qo\'ng\'iroq 24/7' : lang === 'en' ? 'Emergency Call 24/7' : 'Аварийный вызов 24/7'}
                 </span>
-                <a href={`tel:${phoneToShow.replace(/[^\d+]/g, '')}`} className="text-white hover:text-amber-400 transition-colors text-lg font-bold font-sans flex items-center gap-1.5">
-                  <Phone className="w-4 h-4 text-amber-500 fill-amber-500" />
+                <a href={`tel:${phoneToShow.replace(/[^\d+]/g, '')}`} className="text-white hover:text-amber-400 transition-colors text-lg font-bold font-sans flex items-center gap-2">
+                  <Phone className="w-4.5 h-4.5 text-amber-500 fill-amber-500/10" />
                   {phoneToShow}
                 </a>
               </div>
@@ -239,7 +254,7 @@ export default function Header({ onOpenCallback, onHomeReset, forceSolidBg = fal
                   setIsOpen(false);
                   onOpenCallback();
                 }}
-                className="w-full bg-primary-600 hover:bg-primary-500 text-white text-center font-semibold py-3.5 rounded-lg transition-colors shadow-lg shadow-black/40 cursor-pointer"
+                className="w-full bg-primary-600 hover:bg-primary-500 text-white text-center font-semibold text-xs py-3.5 rounded-xl transition-colors shadow-lg shadow-black/40 cursor-pointer"
               >
                 {lang === 'uz' ? 'Hisoblash uchun ariza qoldirish' : lang === 'en' ? 'Submit Estimate Request' : 'Оставить заявку на расчет'}
               </button>

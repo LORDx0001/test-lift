@@ -23,67 +23,16 @@ function getServiceIcon(name) {
 export default function Services({ onSelectService, serviceSection, serviceCards }) {
   const { lang } = useI18n();
 
-  const fallbackServices = [
-    {
-      id: "install",
-      slug: "montazh-novykh-liftov",
-      title: lang === 'uz' ? "Yangi liftlarni montaj qilish" : lang === 'en' ? "Installation of New Elevators" : "Монтаж новых лифтов",
-      shortDescription: lang === 'uz' ? "Uskunalarni o'rnatishning to'liq sikli: loyihalashdan to topshirishgacha." : lang === 'en' ? "Full-cycle installation of elevator equipment from design to hand-off." : "Полный цикл установки лифтового оборудования любого типа и сложности: от проектирования до сдачи гос-органам.",
-      iconName: "Wrench",
-      image: "https://images.unsplash.com/photo-1541888946425-d81bb19240f5?q=80&w=800&auto=format&fit=crop"
-    },
-    {
-      id: "service",
-      slug: "tekhnicheskoye-obsluzhivaniye",
-      title: lang === 'uz' ? "Texnik xizmat ko'rsatish" : lang === 'en' ? "Maintenance & Repairs" : "Техническое обслуживание и ремонт",
-      shortDescription: lang === 'uz' ? "Muntazam ravishda reglament tekshiruvi va 24/7 navbatchilik xizmati." : lang === 'en' ? "Regular maintenance checks and 24/7 emergency dispatch service." : "Регулярный регламентный осмотр и круглосуточная аварийно-диспетчерская служба 24/7 для абсолютной безопасности.",
-      iconName: "ShieldCheck",
-      image: "https://images.unsplash.com/photo-1504307651254-35680f356dfd?q=80&w=800&auto=format&fit=crop"
-    },
-    {
-      id: "modernization",
-      slug: "modernizatsiya-liftov",
-      title: lang === 'uz' ? "Liftlarni modernizatsiya qilish" : lang === 'en' ? "Elevator Modernization" : "Модернизация лифтов",
-      shortDescription: lang === 'uz' ? "Eski uskunalarni yangilash, energiya samaradorligini oshirish va kabinani bezash." : lang === 'en' ? "Updating worn-out equipment, improving energy efficiency and design." : "Обновление изношенного оборудования, повышение энергоэффективности и замена интерьера кабин.",
-      iconName: "TrendingUp",
-      image: "https://images.unsplash.com/photo-1517524206127-48bbd363f3d7?q=80&w=800&auto=format&fit=crop"
-    },
-    {
-      id: "escalators",
-      slug: "eskalatory-i-travolatory",
-      title: lang === 'uz' ? "Eskalatorlar va travolatorlar" : lang === 'en' ? "Escalators & Moving Walks" : "Эскалаторы и траволаторы",
-      shortDescription: lang === 'uz' ? "Savdo markazlari va boshqa ob'yektlar uchun eskalatorlarni yetkazish va montaj qilish." : lang === 'en' ? "Sale, installation, and maintenance of escalators for shopping malls." : "Продажа, монтаж и сервисное обслуживание поэтажных эскалаторов и пассажирских конвейеров для ТРЦ.",
-      iconName: "Layers",
-      image: "https://images.unsplash.com/photo-1519642918688-7e43d19245d8?q=80&w=800&auto=format&fit=crop"
-    },
-    {
-      id: "special",
-      slug: "specialnye-lifty",
-      title: lang === 'uz' ? "Maxsus va sanoat liftlari" : lang === 'en' ? "Special & Industrial Lifts" : "Специальные и промышленные лифты",
-      shortDescription: lang === 'uz' ? "Shaxsiy loyihalar: panoramik, shifoxona, avtomobil va yuk ko'targichlar." : lang === 'en' ? "Custom engineering: panoramic, hospital, vehicle and cargo lifts." : "Разработка индивидуальных проектов: панорамные, больничные, автомобильные и грузовые подъемники.",
-      iconName: "Construction",
-      image: "https://images.unsplash.com/photo-1545459720-aac273a27791?q=80&w=800&auto=format&fit=crop"
-    },
-    {
-      id: "audit",
-      slug: "tekhnadzor-i-ekspertiza",
-      title: lang === 'uz' ? "Ekspertiza va texnik nazorat" : lang === 'en' ? "Supervision & Safety Audit" : "Экспертиза и технический надзор",
-      shortDescription: lang === 'uz' ? "Uskunaning xavfsizligini tekshirish va rasmiy xulosa berish." : lang === 'en' ? "Inspecting equipment safety, issuing reports for state acceptance." : "Проверка безопасности оборудования с выдачей заключений и подготовкой к гос-приемке.",
-      iconName: "FileCheck",
-      image: "https://images.unsplash.com/photo-1454165804606-c3d57bc86b40?q=80&w=800&auto=format&fit=crop"
-    }
-  ];
+  if (!serviceCards || serviceCards.length === 0) return null;
 
-  const services = serviceCards && serviceCards.length > 0
-    ? serviceCards.map((card) => ({
-        id: card.id || card.slug,
-        slug: card.slug,
-        title: getLocalized(card, "title", lang),
-        shortDescription: getLocalized(card, "desc", lang) || getLocalized(card, "description", lang),
-        iconName: card.icon || "Wrench",
-        image: card.image || "https://images.unsplash.com/photo-1541888946425-d81bb19240f5?q=80&w=800&auto=format&fit=crop"
-      }))
-    : fallbackServices;
+  const services = serviceCards.map((card) => ({
+    id: card.id || card.slug,
+    slug: card.slug,
+    title: getLocalized(card, "title", lang),
+    shortDescription: getLocalized(card, "desc", lang) || getLocalized(card, "description", lang),
+    iconName: card.icon || "Wrench",
+    image: card.image || "https://images.unsplash.com/photo-1541888946425-d81bb19240f5?q=80&w=800&auto=format&fit=crop"
+  }));
 
   const currentMiniTitle = getLocalized(serviceSection, "mini_title", lang) || (lang === 'uz' ? "🛠️ Professional xizmatlarimiz" : lang === 'en' ? "🛠️ Our Professional Services" : "🛠️ Наши профессиональные услуги");
   const currentTitle = getLocalized(serviceSection, "title", lang) || (lang === 'uz' ? "Vertikal transport uchun muhandislik yechimlari" : lang === 'en' ? "Engineering Solutions for Vertical Transport" : "Инженерные решения для вертикального транспорта");
@@ -91,7 +40,7 @@ export default function Services({ onSelectService, serviceSection, serviceCards
 
   return (
     <section id="services" className="py-20 bg-slate-50 scroll-mt-16">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div className="max-w-7xl mx-auto px-2.5 sm:px-6 lg:px-8">
         
         {/* Header Section */}
         <div className="text-center max-w-3xl mx-auto mb-16 space-y-4">

@@ -2,63 +2,40 @@ import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { X, Eye, ShieldCheck, Award } from "lucide-react";
 import { useI18n } from "../i18n";
+import { getLocalized } from "../utils/localize";
 
-export default function Certificates() {
+export default function Certificates({ certificates, certificateCards }) {
   const { lang } = useI18n();
   const [activeZoomImage, setActiveZoomImage] = useState(null);
 
-  const certificatesList = [
-    {
-      id: "cert1",
-      title: lang === 'uz' ? "Montaj-sozlash ishlariga davlat litsenziyasi" : lang === 'en' ? "State License for Installation & Commissioning" : "Государственная лицензия на монтажно-наладочные работы",
-      issuer: lang === 'uz' ? "O'zbekiston Respublikasi Qurilish Vazirligi" : lang === 'en' ? "Ministry of Construction of the Republic of Uzbekistan" : "Министерство строительства Республики Узбекистан",
-      year: lang === 'uz' ? "2029-yilgacha amal qiladi" : lang === 'en' ? "Valid until 2029" : "Действительна до 2029 г.",
-      image: "https://images.unsplash.com/photo-1450133064473-71024230f91b?q=80&w=400&auto=format&fit=crop"
-    },
-    {
-      id: "cert2",
-      title: lang === 'uz' ? "Muvofiqlik sertifikati ISO 9001:2015" : lang === 'en' ? "Quality Management Certificate ISO 9001:2015" : "Сертификат соответствия СМК ISO 9001:2015",
-      issuer: lang === 'uz' ? "Muhandislik sifati boshqaruvi xalqaro standarti" : lang === 'en' ? "International Engineering Management Quality Standard" : "Международный стандарт менеджмента качества инжиниринга",
-      year: "2025 г.",
-      image: "https://images.unsplash.com/photo-1589330694653-ded6df53f6ee?q=80&w=400&auto=format&fit=crop"
-    },
-    {
-      id: "cert3",
-      title: lang === 'uz' ? "Sanoat Xavfsizligi Davlat Qo'mitasi Ruxsatnomasi" : lang === 'en' ? "State Industrial Safety Committee Clearance" : "Разрешение Госкомитета Промышленной Безопасности",
-      issuer: lang === 'uz' ? "O'zbekiston davlat texnik nazorati (Sanoatxavfsizlik)" : lang === 'en' ? "State Technical Inspection of Uzbekistan (Sanoatxavfsizlik)" : "Государственный технический надзор РУз (Узгостехнадзор)",
-      year: lang === 'uz' ? "Muntazam attestatsiya" : lang === 'en' ? "Regularly Recertified" : "Регулярная аттестация",
-      image: "https://images.unsplash.com/photo-1454165804606-c3d57bc86b40?q=80&w=400&auto=format&fit=crop"
-    }
-  ];
+  if (!certificateCards || certificateCards.length === 0) return null;
+
+  const currentMiniTitle = getLocalized(certificates, "mini_title", lang) || (lang === 'uz' ? "📜 Davlat litsenziyalari va ruxsatnomalar" : lang === 'en' ? "📜 State Licenses & Certifications" : "📜 Государственные лицензии и допуски");
+  const currentTitle = getLocalized(certificates, "title", lang) || (lang === 'uz' ? "Rasmiy guvohnomalar va ISO standartlari" : lang === 'en' ? "Official Credentials & ISO Standards" : "Официальные свидетельства и стандарты ISO");
+  const currentDesc = getLocalized(certificates, "desc", lang) || (lang === 'uz' ? "Safetech Engineering o'rnatish-loyiha va sozlash faoliyatini sanoat xavfsizligining barcha tegishli davlat muvofiqlik sertifikatlariga ega holda qonuniy ravishda amalga oshiradi." : lang === 'en' ? "Safetech Engineering conducts installation, engineering, and commissioning activities with full legal compliance, holding all official state safety licenses." : "Safetech Engineering осуществляет монтажно-проектную и наладческую деятельность легитимно, имея все профильные государственные сертификаты соответствия промышленной безопасности.");
 
   return (
     <section id="certificates" className="py-20 bg-white scroll-mt-16">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div className="max-w-7xl mx-auto px-2.5 sm:px-6 lg:px-8">
         
         {/* Title */}
         <div className="text-center max-w-3xl mx-auto mb-16 space-y-4">
           <span className="inline-flex items-center gap-2 bg-primary-50 text-primary-800 text-xs font-bold px-3 py-1 rounded-md uppercase tracking-wider">
-            📜 {lang === 'uz' ? "Davlat litsenziyalari va ruxsatnomalar" : lang === 'en' ? "State Licenses & Certifications" : "Государственные лицензии и допуски"}
+            {currentMiniTitle}
           </span>
           <h2 className="text-3xl md:text-4xl font-display font-extrabold text-slate-900 tracking-tight leading-tight">
-            {lang === 'uz' ? "Rasmiy guvohnomalar va ISO standartlari" : lang === 'en' ? "Official Credentials & ISO Standards" : "Официальные свидетельства и стандарты ISO"}
+            {currentTitle}
           </h2>
           <p className="text-sm md:text-base text-slate-500 font-sans font-light">
-            {lang === 'uz' ? (
-              <>Safetech Engineering o'rnatish-loyiha va sozlash faoliyatini sanoat xavfsizligining barcha tegishli davlat muvofiqlik sertifikatlariga ega holda qonuniy ravishda amalga oshiradi.</>
-            ) : lang === 'en' ? (
-              <>Safetech Engineering conducts installation, engineering, and commissioning activities with full legal compliance, holding all official state safety licenses.</>
-            ) : (
-              <>Safetech Engineering осуществляет монтажно-проектную и наладческую деятельность легитимно, имея все профильные государственные сертификаты соответствия промышленной безопасности.</>
-            )}
+            {currentDesc}
           </p>
         </div>
 
         {/* Certificate list */}
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-5xl mx-auto">
-          {certificatesList.map((cert) => (
+          {certificateCards.map((cert) => (
             <div 
-              key={cert.id}
+              key={cert.id || cert.title_ru}
               className="bg-slate-50 border border-slate-100 rounded-2xl p-5 hover:shadow-xl hover:bg-white hover:border-slate-200 transition-all duration-300 group flex flex-col justify-between"
             >
               {/* Cover visual representation */}
@@ -68,7 +45,7 @@ export default function Certificates() {
               >
                 <img 
                   src={cert.image} 
-                  alt={cert.title} 
+                  alt={getLocalized(cert, "title", lang)} 
                   className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500 pointer-events-none"
                 />
                 
@@ -84,13 +61,13 @@ export default function Certificates() {
               {/* Details */}
               <div className="mt-4 text-left space-y-1.5 flex-1 flex flex-col justify-end">
                 <span className="text-[10px] text-primary-600 font-mono block uppercase tracking-wider">
-                  {cert.year}
+                  {getLocalized(cert, "year", lang)}
                 </span>
                 <h3 className="font-display font-bold text-sm text-slate-900 leading-snug">
-                  {cert.title}
+                  {getLocalized(cert, "title", lang)}
                 </h3>
                 <p className="text-[11px] text-slate-500 font-sans font-light leading-snug">
-                  {lang === 'uz' ? "Berilgan:" : lang === 'en' ? "Issuer:" : "Выдан:"} {cert.issuer}
+                  {lang === 'uz' ? "Berilgan:" : lang === 'en' ? "Issuer:" : "Выдан:"} {getLocalized(cert, "issuer", lang)}
                 </p>
               </div>
             </div>
@@ -123,7 +100,7 @@ export default function Certificates() {
                 <div className="aspect-[3/4] rounded-lg bg-orange-50/10 border-2 border-dashed border-primary-100 relative overflow-hidden flex items-center justify-center p-2">
                   <img 
                     src={activeZoomImage.image} 
-                    alt={activeZoomImage.title} 
+                    alt={getLocalized(activeZoomImage, "title", lang)} 
                     className="w-full h-full object-cover filter brightness-[0.98] pointer-events-none rounded select-none"
                   />
                   {/* Stamp */}
@@ -138,11 +115,11 @@ export default function Certificates() {
                     <Award className="w-3.5 h-3.5" /> {lang === 'uz' ? "Davlat Reyestri" : lang === 'en' ? "State Registry" : "Гос-Реестр РУз"}
                   </div>
                   <h4 className="font-display font-bold text-base text-slate-900 pt-1 leading-snug">
-                    {activeZoomImage.title}
+                    {getLocalized(activeZoomImage, "title", lang)}
                   </h4>
                   <p className="text-xs text-slate-500 leading-relaxed font-sans font-light">
-                    {lang === 'uz' ? "Bergan organ:" : lang === 'en' ? "Issuer:" : "Орган выдачи:"} {activeZoomImage.issuer} <br />
-                    {lang === 'uz' ? "Amal qilish muddati:" : lang === 'en' ? "Validity Period:" : "Период согласования:"} {activeZoomImage.year}
+                    {lang === 'uz' ? "Bergan organ:" : lang === 'en' ? "Issuer:" : "Орган выдачи:"} {getLocalized(activeZoomImage, "issuer", lang)} <br />
+                    {lang === 'uz' ? "Amal qilish muddati:" : lang === 'en' ? "Validity Period:" : "Период согласования:"} {getLocalized(activeZoomImage, "year", lang)}
                   </p>
                 </div>
 

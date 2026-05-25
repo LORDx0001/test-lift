@@ -74,7 +74,7 @@ export default function ContactForm({ initialService = "", onSuccessSubmit, gene
       <div className="absolute inset-x-0 top-0 h-40 bg-gradient-to-b from-slate-950/40 to-transparent"></div>
       <div className="absolute -right-32 -top-32 w-96 h-96 bg-primary-950/45 rounded-full filter blur-3xl opacity-60"></div>
 
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+      <div className="max-w-7xl mx-auto px-2.5 sm:px-6 lg:px-8 relative z-10">
         
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 items-stretch">
           

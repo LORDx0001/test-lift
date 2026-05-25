@@ -6,112 +6,13 @@ import { getLocalized } from "../utils/localize";
 
 export default function Projects({ gallerySection, galleryImages }) {
   const { lang } = useI18n();
-  const [activeFilter, setActiveFilter] = useState("all");
+  // No static filters needed, showing fully dynamic projects.
 
-  const categories = [
-    { key: "all", label: lang === 'uz' ? "Barcha ob'yektlar" : lang === 'en' ? "All Projects" : "Все объекты" },
-    { key: "residential", label: lang === 'uz' ? "Turar-joy majmualari" : lang === 'en' ? "Residential Complexes" : "Жилые комплексы" },
-    { key: "business", label: lang === 'uz' ? "Biznes markazlari & TRM" : lang === 'en' ? "Business Centers & Malls" : "Бизнес-центры & ТРЦ" },
-    { key: "hotel", label: lang === 'uz' ? "Mehmonxonalar" : lang === 'en' ? "Hotels & Resorts" : "Отели & Гостиницы" },
-    { key: "special", label: lang === 'uz' ? "Maxsus ob'yektlar" : lang === 'en' ? "Special Projects" : "Спец-объекты" }
-  ];
-
-  const fallbackProjects = [
-    {
-      id: "proj1",
-      title: lang === 'uz' ? "Premium Turar-joy Majmuasi" : lang === 'en' ? "Premium Residential Complex" : "Премиальный Жилой Комплекс",
-      category: "residential",
-      location: lang === 'uz' ? "Toshkent sh., Mirabod tumani (Mirabad Ave)" : lang === 'en' ? "Tashkent City, Mirabad District" : "г. Ташкент, Мирабадский р-н (Mirabad Ave)",
-      image: "https://images.unsplash.com/photo-1545324418-cc1a3fa10c00?q=80&w=800&auto=format&fit=crop",
-      description: lang === 'uz' ? "Wittur brendining eksklyuziv kabinalari bilan jihozlangan 12 ta premium liftlarni o'rnatish." : lang === 'en' ? "Concept engineering and installation of 12 premium elevators with customized textured Wittur steel cabins." : "Разработка концепции и монтаж 12 лифтов премиум-класса повышенной грузоподъемности с эксклюзивной отделкой кабин текстурированной нержавеющей сталью бренда Wittur.",
-      specs: [
-        { label: lang === 'uz' ? "Uskuna turi" : "Тип оборудования", value: lang === 'uz' ? "Yo'lovchi lifti (reduktorsiz)" : "Пассажирские безредукторные" },
-        { label: "Бренд", value: "Wittur Premium (Германия/Италия)" },
-        { label: lang === 'uz' ? "Tezlik" : "Скорость", value: "2.0 м/с" },
-        { label: lang === 'uz' ? "Qavatlar soni" : "Количество этажей", value: "16" },
-        { label: lang === 'uz' ? "Yuk ko'tarish quvvati" : "Грузоподъемность", value: "1000 кг (13 чел)" }
-      ]
-    },
-    {
-      id: "proj2",
-      title: lang === 'uz' ? "A toifali Biznes-Markaz" : lang === 'en' ? "Class-A Business Center" : "Бизнес-Центр класса А",
-      category: "business",
-      location: lang === 'uz' ? "Toshkent sh., Yakkasaroy tumani" : lang === 'en' ? "Tashkent City, Yakkasaray District" : "г. Ташкент, Яккасарайский р-н",
-      image: "https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?q=80&w=800&auto=format&fit=crop",
-      description: lang === 'uz' ? "Kutish vaqtini minimal qilish uchun DSC aqlli boshqaruv tizimli 6 ta tezyurar liftlar o'rnatildi." : lang === 'en' ? "Supply and commissioning of 6 smart high-speed elevators with Destination Selection Control system." : "Поставка и пусконаладка 6 умных скоростных лифтов со связанной групповой системой управления (DSC - Destination Selection Control) для минимизации ожидания.",
-      specs: [
-        { label: lang === 'uz' ? "Uskuna turi" : "Тип оборудования", value: lang === 'uz' ? "Tezyurar yo'lovchi" : "Высокоскоростные пассажирские" },
-        { label: "Бренд", value: "Kleemann (Греция)" },
-        { label: lang === 'uz' ? "Tezlik" : "Скорость", value: "2.5 м/с" },
-        { label: lang === 'uz' ? "Boshqaruv tizimi" : "Система управления", value: lang === 'uz' ? "Intellektual guruhli" : "Интеллектуальная групповая" },
-        { label: lang === 'uz' ? "Kabi bezaklari" : "Интерьер кабины", value: lang === 'uz' ? "Xrom va LCD displeylar" : "Зеркальный хром и ЖК-дисплеи" }
-      ]
-    },
-    {
-      id: "proj3",
-      title: lang === 'uz' ? "Butik-oteldagi panoramali lift" : lang === 'en' ? "Panoramic Elevator in Boutique Hotel" : "Панорамный лифт в бутик-отеле",
-      category: "hotel",
-      location: lang === 'uz' ? "Samarqand shahri" : lang === 'en' ? "Samarkand City" : "г. Самарканд",
-      image: "https://images.unsplash.com/photo-1560185007-cde436f6a4d0?q=80&w=800&auto=format&fit=crop",
-      description: lang === 'uz' ? "Tarixiy hududda yarim doirali panoramali liftni nozik montaj qilish. Mexanizmlar yashirilgan." : lang === 'en' ? "Custom design and precise installation of a semi-circular glass elevator in the historical center." : "Проектирование и тонкий монтаж полукруглого панорамного лифта в исторической части города. Все элементы механизмов скрыты для идеального эстетического восприятия.",
-      specs: [
-        { label: lang === 'uz' ? "Uskuna turi" : "Тип оборудования", value: lang === 'uz' ? "Panoramali gidravlik" : "Панорамный гидравлический" },
-        { label: "Бренд", value: "Orona (Испания)" },
-        { label: lang === 'uz' ? "Oyna materiali" : "Материал остекления", value: "Скругленный триплекс 10+10 мм" },
-        { label: lang === 'uz' ? "Harakat ravonligi" : "Плавность хода", value: lang === 'uz' ? "Juda yuqori (shovqinsiz)" : "Высочайшая (тихий гидросиловой блок)" }
-      ]
-    },
-    {
-      id: "proj4",
-      title: lang === 'uz' ? "Ko'p tarmoqli klinika" : lang === 'en' ? "Multi-profile Medical Clinic" : "Многопрофильная клиника",
-      category: "special",
-      location: lang === 'uz' ? "Toshkent sh., Shayxontohur tumani" : lang === 'en' ? "Tashkent City, Shaykhantahur District" : "г. Ташкент, Шайхантахурский р-н",
-      image: "https://images.unsplash.com/photo-1519494026892-80bbd2d6fd0d?q=80&w=800&auto=format&fit=crop",
-      description: lang === 'uz' ? "Sterillik talablariga va tez yordam rejimiga mos keladigan ixtisoslashtirilgan shifoxona liftlari o'rnatildi." : lang === 'en' ? "Installation of specialized hospital elevators with strict hygiene parameters, smooth deceleration and emergency Priority." : "Установка специализированных больничных лифтов с соблюдением повышенных требований к стерильности, плавному замедлению перед остановкой и режимом приоритета скорой помощи.",
-      specs: [
-        { label: lang === 'uz' ? "Uskuna turi" : "Тип оборудования", value: lang === 'uz' ? "Shifoxona lifti" : "Больничный проходной лифт" },
-        { label: "Бренд", value: "Sigma (Южная Корея)" },
-        { label: lang === 'uz' ? "Antibakterial qoplama" : "Антибактериальная отделка", value: lang === 'uz' ? "Kumush ionlari" : "Ионы серебра, отсутствие швов" },
-        { label: lang === 'uz' ? "Kabina balandligi" : "Высота кабины", value: "2400 мм (под каталки)" }
-      ]
-    },
-    {
-      id: "proj5",
-      title: lang === 'uz' ? "Savdo-Ko'ngilochar Markazi (TRM)" : lang === 'en' ? "Shopping & Entertainment Mall" : "Торгово-развлекательный центр (ТРЦ)",
-      category: "business",
-      location: lang === 'uz' ? "Toshkent sh., Yunusobod tumani" : lang === 'en' ? "Tashkent City, Yunusabad District" : "г. Ташкент, Юнусабадский р-н",
-      image: "https://images.unsplash.com/photo-1519501025264-65ba15a82390?q=80&w=800&auto=format&fit=crop",
-      description: lang === 'uz' ? "Savdo markazini to'liq jihozlash: 14 ta og'ir eskalator va 4 ta ombor yuk liftlarini o'rnatish." : lang === 'en' ? "Complete shopping center equipping: 14 heavy commercial escalators and 4 heavy freight warehouse lifts." : "Комплексное оснащение торгового центра вертикальным транспортом: монтаж 14 тяжелых коммерческих эскалаторов и 4 сервисных грузовых лифтов для складов.",
-      specs: [
-        { label: lang === 'uz' ? "Uskunalar" : "Оборудование", value: "14 эскалаторов + 4 грузовых лифта" },
-        { label: "Бренд", value: "Fuji Lift (Япония/Китай)" },
-        { label: lang === 'uz' ? "Zina kengligi" : "Ширина ступеней", value: "1000 мм" },
-        { label: lang === 'uz' ? "Yuk ko'tarish quvvati" : "Грузовые лифты", value: "3200 кг" }
-      ]
-    },
-    {
-      id: "proj6",
-      title: lang === 'uz' ? "Hamyonbop ko'p qavatli bino" : lang === 'en' ? "Economy-Class Housing Complex" : "Жилой Комплекс Эконом-Класса",
-      category: "residential",
-      location: lang === 'uz' ? "Toshkent sh., Sergeli tumani" : lang === 'en' ? "Tashkent City, Sergeli District" : "г. Ташкент, Сергелийский р-н",
-      image: "https://images.unsplash.com/photo-1542314831-068cd1dbfeeb?q=80&w=800&auto=format&fit=crop",
-      description: lang === 'uz' ? "Hamyonbop ko'p xonadonli uylar uchun 8 ta mustahkam Monarch liftlarini o'rnatish va foydalanishga topshirish." : lang === 'en' ? "Installation and hand-off of 8 reliable Monarch elevators with anti-vandal steel finishing for multi-family block." : "Монтаж и передача в эксплуатацию 8 надежных бюджетных лифтов Monarch с антивандальной стальной обшивкой и износостойкими механизмами для многоквартирного микрорайона.",
-      specs: [
-        { label: lang === 'uz' ? "Uskuna turi" : "Тип оборудования", value: "Пассажирские Monarch" },
-        { label: lang === 'uz' ? "Liftlar soni" : "Количество лифтов", value: "8 единиц" },
-        { label: lang === 'uz' ? "Yuk ko'tarish" : "Грузоподъемность", value: "630 кг и 1000 кг" },
-        { label: lang === 'uz' ? "Resurs muddati" : "Назначенный ресурс", value: "25 лет бесперебойной службы" }
-      ]
-    }
-  ];
-
-  // If dynamic database gallery images exist, we map them as dynamic showcases!
   const getProjectsData = () => {
     if (galleryImages && galleryImages.length > 0) {
       return galleryImages.map((img, idx) => ({
         id: `db_proj_${img.id || idx}`,
         title: getLocalized(img, "title", lang),
-        category: "all", // or map to default
         location: lang === 'uz' ? "Toshkent shahri" : lang === 'en' ? "Tashkent City" : "г. Ташкент",
         image: img.image,
         description: getLocalized(img, "desc", lang) || getLocalized(img, "description", lang),
@@ -121,21 +22,21 @@ export default function Projects({ gallerySection, galleryImages }) {
         ]
       }));
     }
-    return fallbackProjects;
+    return [];
   };
 
   const projects = getProjectsData();
 
-  const filteredProjects = activeFilter === "all" 
-    ? projects 
-    : projects.filter((p) => p.category === activeFilter);
+  if (!projects || projects.length === 0) return null;
+
+  const filteredProjects = projects;
 
   const currentMiniTitle = getLocalized(gallerySection, "mini_title", lang) || (lang === 'uz' ? "🏢 Safetech loyihalari" : lang === 'en' ? "🏢 Completed Safetech Projects" : "🏢 Реализованные объекты Safetech");
   const currentTitle = getLocalized(gallerySection, "title", lang) || (lang === 'uz' ? "Bizga O'zbekistonning nufuzli binolarini ishonib topshirishadi" : lang === 'en' ? "Trusted by Iconic Buildings in Uzbekistan" : "Нам доверяют знаковые здания Узбекистана");
 
   return (
     <section id="projects" className="py-20 bg-slate-50 scroll-mt-16">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div className="max-w-7xl mx-auto px-2.5 sm:px-6 lg:px-8">
         
         {/* Title */}
         <div className="text-center max-w-3xl mx-auto mb-12 space-y-4">
