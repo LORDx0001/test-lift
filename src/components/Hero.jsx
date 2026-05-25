@@ -10,15 +10,24 @@ export default function Hero({ onOpenCallback, heroData }) {
 
   // Dynamic slides based strictly on backend data
   const getSlides = () => {
-    if (!heroData) return [];
+    const defaultSlide = {
+      tag: "Safetech Engineering — Ташкент",
+      title: lang === 'uz' ? "Binoingiz uchun mukammal liftlar" : lang === 'en' ? "Perfect elevators for your building" : "Совершенные лифты для вашего здания",
+      subtitle: lang === 'uz' ? "Har bir qavatda xavfsizlik" : lang === 'en' ? "Safety on every floor" : "Безопасность на каждом этаже",
+      desc: lang === 'uz' ? "Biz O'zbekistonda eng ishonchli va zamonaviy liftlarni, eskalatorlarni o'rnatish, modernizatsiya qilish va texnik xizmat ko'rsatish bilan shug'ullanamiz." : lang === 'en' ? "We specialize in the installation, modernization, and maintenance of the most reliable and advanced elevators and escalators in Uzbekistan." : "Мы занимаемся установкой, модернизацией и обслуживанием самых надежных и современных лифтов и эскалаторов в Узбекистане.",
+      buttonText: lang === 'uz' ? "Narxni hisoblash" : lang === 'en' ? "Calculate Cost" : "Рассчитать стоимость",
+      bgImage: "https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?q=80&w=1400&auto=format&fit=crop"
+    };
+
+    if (!heroData) return [defaultSlide];
     
     return [{
-      tag: getLocalized(heroData, 'mini_title', lang) || "Safetech Engineering — Ташкент",
-      title: getLocalized(heroData, 'title', lang) || "Профессиональный монтаж лифтов и эскалаторов под ключ",
+      tag: getLocalized(heroData, 'mini_title', lang) || defaultSlide.tag,
+      title: getLocalized(heroData, 'title', lang) || defaultSlide.title,
       subtitle: lang === 'uz' ? "Har bir qavatda xavfsizlik" : lang === 'en' ? "Safety on every floor" : "Безопасность на каждом этаже",
-      desc: getLocalized(heroData, 'desc', lang) || "Поставка, проектирование, установка и государственная аттестация лифтового оборудования любого типа.",
-      buttonText: lang === 'uz' ? "Narxni hisoblash" : lang === 'en' ? "Calculate Cost" : "Рассчитать стоимость",
-      bgImage: heroData.hero_bg || "https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?q=80&w=1400&auto=format&fit=crop"
+      desc: getLocalized(heroData, 'desc', lang) || defaultSlide.desc,
+      buttonText: defaultSlide.buttonText,
+      bgImage: heroData.hero_bg || defaultSlide.bgImage
     }];
   };
 

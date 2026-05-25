@@ -16,6 +16,7 @@ import FeedbackModal from "./components/FeedbackModal";
 import ServicePage from "./components/ServicePage";
 import { endpoints } from "./api";
 import { getLocalized } from "./utils/localize";
+import { WifiOff, RefreshCw, X } from "lucide-react";
 
 // Scroll to top on navigation or reset
 function ScrollReset() {
@@ -26,14 +27,101 @@ function ScrollReset() {
   return null;
 }
 
-// Gorgeous Loader element
+// Gorgeous premium Loader element with premium elevator blueprint animations
 function Loader() {
   const { lang } = useI18n();
+  const [progress, setProgress] = useState(0);
+  const [statusIdx, setStatusIdx] = useState(0);
+
+  const statuses = lang === 'uz' ? [
+    "Lift shaxtalarini diagnostika qilish...",
+    "VVVF chastota rostlagichlarini sozlash...",
+    "Elektronika va boshqaruv panellarini ulash...",
+    "Safetech Engineering tizimlarini yuklash..."
+  ] : lang === 'en' ? [
+    "Diagnosing elevator shafts...",
+    "Configuring VVVF drive controllers...",
+    "Connecting electronics and control boards...",
+    "Loading Safetech Engineering systems..."
+  ] : [
+    "Диагностика лифтовых шахт...",
+    "Настройка частотных регуляторов VVVF...",
+    "Подключение электроники и плат управления...",
+    "Загрузка систем Safetech Engineering..."
+  ];
+
+  useEffect(() => {
+    const timer = setInterval(() => {
+      setProgress((prev) => {
+        if (prev >= 100) {
+          clearInterval(timer);
+          return 100;
+        }
+        return prev + Math.floor(Math.random() * 12) + 4;
+      });
+    }, 180);
+
+    const statusTimer = setInterval(() => {
+      setStatusIdx((prev) => (prev + 1) % statuses.length);
+    }, 1100);
+
+    return () => {
+      clearInterval(timer);
+      clearInterval(statusTimer);
+    };
+  }, []);
+
+  const clampedProgress = Math.min(progress, 100);
+
   return (
-    <div className="fixed inset-0 bg-slate-950 flex flex-col items-center justify-center z-50">
-      <div className="w-12 h-12 border-4 border-slate-800 border-t-primary-500 rounded-full animate-spin mb-4"></div>
-      <div className="text-slate-400 font-display font-medium text-xs tracking-widest uppercase animate-pulse">
-        {lang === 'uz' ? "Yuklanmoqda..." : lang === 'en' ? "Loading Engineering Systems..." : "Загрузка инженерных систем..."}
+    <div className="fixed inset-0 bg-slate-950 flex flex-col items-center justify-center z-50 select-none px-4">
+      {/* Background High-tech Blueprint Grid lines */}
+      <div className="absolute inset-0 bg-[linear-gradient(to_right,#1e293b_1px,transparent_1px),linear-gradient(to_bottom,#1e293b_1px,transparent_1px)] bg-[size:4rem_4rem] opacity-20 [mask-image:radial-gradient(ellipse_60%_50%_at_50%_50%,#000_100%,transparent_100%)]"></div>
+      
+      {/* Visual glowing lift shaft container */}
+      <div className="w-20 h-32 border-2 border-slate-800 rounded-xl relative mb-8 flex flex-col justify-between p-1 bg-slate-900/60 overflow-hidden shadow-[0_0_25px_rgba(37,99,235,0.1)]">
+        {/* Rails */}
+        <div className="absolute left-1/2 top-0 bottom-0 w-0.5 bg-slate-700 -translate-x-1/2"></div>
+        {/* Moving glowing elevator cab */}
+        <div 
+          className="w-10 h-10 bg-gradient-to-br from-primary-600 to-amber-500 rounded-lg flex items-center justify-center shadow-lg relative left-1/2 -translate-x-1/2 z-10 transition-all duration-300"
+          style={{ 
+            transform: `translate(-50%, ${80 - (clampedProgress * 0.8)}px)` 
+          }}
+        >
+          {/* Cab light */}
+          <span className="w-1.5 h-1.5 rounded-full bg-white animate-ping"></span>
+          {/* Cables */}
+          <div className="absolute bottom-10 left-1/2 -translate-x-1/2 w-0.5 bg-amber-500/80" style={{ height: '80px' }}></div>
+        </div>
+      </div>
+
+      {/* Brand logo title */}
+      <div className="text-center mb-6 space-y-1">
+        <span className="font-display font-black text-2xl tracking-tight text-white block">
+          SAFETECH <span className="text-amber-500">ENGINEERING</span>
+        </span>
+        <span className="text-[10px] text-slate-500 tracking-widest uppercase block font-mono">
+          High Standards of Vertical Mobility
+        </span>
+      </div>
+
+      {/* Progress percentage */}
+      <div className="font-mono text-3xl font-bold text-white mb-2 tracking-tight">
+        {clampedProgress}%
+      </div>
+
+      {/* Premium Loader Progress Bar */}
+      <div className="w-64 sm:w-80 h-1.5 bg-slate-900 rounded-full overflow-hidden border border-slate-800/80 mb-3 relative">
+        <div 
+          className="h-full bg-gradient-to-r from-primary-600 via-primary-500 to-amber-500 rounded-full transition-all duration-300 shadow-[0_0_12px_rgba(245,158,11,0.5)]"
+          style={{ width: `${clampedProgress}%` }}
+        ></div>
+      </div>
+
+      {/* Dynamic Load State Text */}
+      <div className="text-slate-400 font-mono text-xs tracking-wide animate-pulse-subtle h-4 text-center">
+        {statuses[statusIdx]}
       </div>
     </div>
   );
@@ -132,21 +220,35 @@ function AppContent() {
   const [loading, setLoading] = useState(true);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [preselectedService, setPreselectedService] = useState("");
+  const [apiError, setApiError] = useState(false);
+  const [showBanner, setShowBanner] = useState(true);
+  const [retrying, setRetrying] = useState(false);
+  const { lang } = useI18n();
   
   const navigate = useNavigate();
   const location = useLocation();
 
+  const fetchPageData = async (isRetry = false) => {
+    if (isRetry) {
+      setRetrying(true);
+    } else {
+      setLoading(true);
+    }
+    try {
+      const response = await endpoints.pageData();
+      setPageData(response.data);
+      setApiError(false);
+    } catch (err) {
+      console.error("Failed to load page data from Django API", err);
+      setApiError(true);
+      setShowBanner(true);
+    } finally {
+      setLoading(false);
+      setRetrying(false);
+    }
+  };
+
   useEffect(() => {
-    const fetchPageData = async () => {
-      try {
-        const response = await endpoints.pageData();
-        setPageData(response.data);
-      } catch (err) {
-        console.error("Failed to load page data from Django API", err);
-      } finally {
-        setLoading(false);
-      }
-    };
     fetchPageData();
   }, []);
 
@@ -217,6 +319,58 @@ function AppContent() {
         preselectedService={preselectedService}
         onSuccessSubmit={(details) => console.log("Form successfully posted:", details)}
       />
+
+      {/* Premium Glassmorphic Offline/Demo Mode Floating Banner */}
+      {apiError && showBanner && (
+        <div className="fixed bottom-6 left-6 right-6 md:left-auto md:max-w-md bg-slate-950/90 backdrop-blur-xl border border-amber-500/30 rounded-2xl p-5 shadow-[0_10px_50px_rgba(245,158,11,0.15)] z-50 animate-fade-in flex flex-col gap-4 text-left">
+          <div className="flex items-start justify-between gap-3">
+            <div className="flex gap-3">
+              <div className="w-10 h-10 rounded-xl bg-amber-500/10 border border-amber-500/20 flex items-center justify-center shrink-0">
+                <WifiOff className="w-5 h-5 text-amber-500 animate-pulse" />
+              </div>
+              <div className="space-y-1">
+                <div className="flex items-center gap-2">
+                  <span className="w-2.5 h-2.5 rounded-full bg-amber-500 animate-ping"></span>
+                  <h4 className="font-display font-extrabold text-sm text-white uppercase tracking-wider">
+                    {lang === 'uz' ? "Demo Rejimi Faol" : lang === 'en' ? "Local Demo Mode" : "Демонстрационный Режим"}
+                  </h4>
+                </div>
+                <p className="text-slate-400 text-xs font-sans font-light leading-relaxed">
+                  {lang === 'uz' 
+                    ? "Tizim Django API (port 8000) bilan bog'lana olmadi. Premium dizayn elementlarini sinab ko'rishingiz uchun lokal ma'lumotlar faollashtirildi."
+                    : lang === 'en'
+                    ? "Could not connect to the Django API on port 8000. We have loaded a premium local demo experience for your preview."
+                    : "Не удалось подключиться к Django API на порту 8000. Мы активировали премиальный демо-режим для ознакомления."
+                  }
+                </p>
+              </div>
+            </div>
+            <button 
+              onClick={() => setShowBanner(false)}
+              className="text-slate-500 hover:text-white p-1 hover:bg-white/5 rounded-lg transition-colors cursor-pointer"
+            >
+              <X className="w-4 h-4" />
+            </button>
+          </div>
+          
+          <div className="flex flex-col sm:flex-row gap-2.5 items-stretch border-t border-slate-900 pt-3.5">
+            <button
+              onClick={() => fetchPageData(true)}
+              disabled={retrying}
+              className="flex-1 bg-gradient-to-r from-amber-500 to-amber-600 hover:from-amber-400 hover:to-amber-500 text-slate-950 font-bold text-xs py-2.5 px-4 rounded-xl shadow-lg shadow-amber-950/20 hover:scale-[1.01] active:scale-[0.99] transition-all flex items-center justify-center gap-1.5 cursor-pointer disabled:opacity-60"
+            >
+              <RefreshCw className={`w-3.5 h-3.5 ${retrying ? "animate-spin" : ""}`} />
+              {retrying 
+                ? (lang === 'uz' ? "Bog'lanish tekshirilmoqda..." : lang === 'en' ? "Checking connection..." : "Проверка связи...")
+                : (lang === 'uz' ? "Qayta ulanish" : lang === 'en' ? "Retry Connection" : "Повторить подключение")
+              }
+            </button>
+            <span className="text-[9px] text-slate-550 font-mono flex items-center justify-center leading-none uppercase select-none">
+              Port: 8000
+            </span>
+          </div>
+        </div>
+      )}
     </div>
   );
 }

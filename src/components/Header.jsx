@@ -81,8 +81,17 @@ export default function Header({ onOpenCallback, onHomeReset, forceSolidBg = fal
             )}
             <div className="text-left">
               <span className="font-display font-extrabold text-base sm:text-lg lg:text-xl tracking-tight text-white block leading-tight">
-                {currentBrandName.toUpperCase()}
-                <span className="text-amber-500 font-semibold text-[11px] sm:text-xs lg:text-sm ml-1 tracking-wider uppercase">ENGINEERING</span>
+                {currentBrandName.toUpperCase().endsWith("ENGINEERING") || currentBrandName.toUpperCase().endsWith("ENGINEERING ") ? (
+                  <>
+                    {currentBrandName.toUpperCase().replace("ENGINEERING", "").trim()}
+                    <span className="text-amber-500 font-semibold text-[11px] sm:text-xs lg:text-sm ml-1 tracking-wider uppercase">ENGINEERING</span>
+                  </>
+                ) : (
+                  <>
+                    {currentBrandName.toUpperCase()}
+                    <span className="text-amber-500 font-semibold text-[11px] sm:text-xs lg:text-sm ml-1 tracking-wider uppercase">ENGINEERING</span>
+                  </>
+                )}
               </span>
               <span className="text-[8px] sm:text-[9px] text-slate-400 block tracking-wider font-mono uppercase leading-tight mt-0.5">
                 {lang === 'uz' ? 'Toshkentda liftlar & eskalatorlar' : lang === 'en' ? 'Elevators & escalators in Tashkent' : 'Лифты & Эскалаторы в Ташкенте'}
