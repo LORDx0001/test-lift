@@ -135,7 +135,7 @@ function MainLayout({ pageData, onSelectService, onOpenModal }) {
         heroData={pageData?.hero}
         heroSlides={pageData?.hero_slides}
       />
-      <Stats experienceData={pageData?.experience} />
+      <Stats experienceData={pageData?.experience} experienceCards={pageData?.experience_cards} />
       <About 
         experience={pageData?.experience} 
         experienceCards={pageData?.experience_cards} 
