@@ -132,7 +132,8 @@ function MainLayout({ pageData, onSelectService, onOpenModal }) {
     <>
       <Hero 
         onOpenCallback={() => onOpenModal("Монтаж лифтового оборудования")} 
-        heroData={pageData?.hero} 
+        heroData={pageData?.hero}
+        heroSlides={pageData?.hero_slides}
       />
       <Stats experienceData={pageData?.experience} />
       <About 
@@ -217,6 +218,7 @@ function ServiceDetailRoute({ pageData, onOpenModal }) {
 
 function AppContent() {
   const [pageData, setPageData] = useState(null);
+  // loading = true means the initial full-page loader is visible
   const [loading, setLoading] = useState(true);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [preselectedService, setPreselectedService] = useState("");
@@ -224,16 +226,37 @@ function AppContent() {
   const [showBanner, setShowBanner] = useState(true);
   const [retrying, setRetrying] = useState(false);
   const { lang } = useI18n();
-  
+
   const navigate = useNavigate();
   const location = useLocation();
 
+  // Initial load: both the API fetch AND a 3-second timer must finish
+  useEffect(() => {
+    const MIN_LOAD_MS = 3000;
+
+    const apiPromise = endpoints.pageData()
+      .then((response) => {
+        setPageData(response.data);
+        setApiError(false);
+      })
+      .catch((err) => {
+        console.error("Failed to load page data from Django API", err);
+        setApiError(true);
+        setShowBanner(true);
+      });
+
+    const timerPromise = new Promise((resolve) => setTimeout(resolve, MIN_LOAD_MS));
+
+    // Hide loader only when BOTH are done
+    Promise.all([apiPromise, timerPromise]).finally(() => {
+      setLoading(false);
+    });
+  }, []);
+
+  // Retry (from the error banner) — no minimum timer, just re-fetch
   const fetchPageData = async (isRetry = false) => {
-    if (isRetry) {
-      setRetrying(true);
-    } else {
-      setLoading(true);
-    }
+    if (!isRetry) return; // guard: only used for retries
+    setRetrying(true);
     try {
       const response = await endpoints.pageData();
       setPageData(response.data);
@@ -243,14 +266,9 @@ function AppContent() {
       setApiError(true);
       setShowBanner(true);
     } finally {
-      setLoading(false);
       setRetrying(false);
     }
   };
-
-  useEffect(() => {
-    fetchPageData();
-  }, []);
 
   const handleSelectService = (slug) => {
     navigate(`/services/${slug}`);
