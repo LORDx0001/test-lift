@@ -111,7 +111,7 @@ export default function ServicePage({ service, onBack, onSuccessSubmit, phones }
       transition={{ duration: 0.35 }}
       className="min-h-screen bg-slate-50 pt-32 pb-24"
     >
-      <div className="max-w-7xl mx-auto px-2.5 sm:px-6 lg:px-8">
+      <div className="w-full max-w-[1600px] mx-auto px-4 sm:px-6 lg:px-12">
         
         {/* Back Button */}
         <button
@@ -217,7 +217,7 @@ export default function ServicePage({ service, onBack, onSuccessSubmit, phones }
                 </p>
               </div>
 
-              <div className="grid grid-cols-2 sm:grid-cols-3 gap-4">
+              <div className="grid grid-cols-1 min-[400px]:grid-cols-2 sm:grid-cols-3 gap-4">
                 {partnerBrands.map((brand) => (
                   <div key={brand.name} className="p-4 bg-slate-950/60 rounded-xl border border-white/5 text-center flex flex-col justify-center items-center">
                     <span className="text-amber-500 text-sm font-bold font-display block">{brand.name}</span>

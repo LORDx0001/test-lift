@@ -58,7 +58,7 @@ export default function Header({ onOpenCallback, onHomeReset, forceSolidBg = fal
             : "bg-slate-950/80 backdrop-blur-sm md:bg-transparent py-4 md:py-6"
         }`}
       >
-        <div className="max-w-7xl mx-auto px-2.5 sm:px-6 lg:px-8 flex justify-between items-center">
+        <div className="w-full max-w-[1600px] mx-auto px-3 sm:px-6 lg:px-12 flex justify-between items-center">
           {/* Logo */}
           <a
             href="#"
@@ -69,31 +69,28 @@ export default function Header({ onOpenCallback, onHomeReset, forceSolidBg = fal
                 window.scrollTo({ top: 0, behavior: "smooth" });
               }
             }}
-            className="flex items-center gap-2.5 group"
+            className="flex items-center gap-2 sm:gap-2.5 group shrink-0"
           >
-            {navbarLogoUrl ? (
-              <img src={navbarLogoUrl} alt="Logo" className="h-10 w-auto object-contain" />
-            ) : (
-              <div className="bg-primary-600 group-hover:bg-primary-500 text-white p-2 rounded-lg transition-colors duration-300 relative">
-                <ShieldCheck className="w-6 h-6" />
-                <div className="absolute inset-0 rounded-lg border border-white/20 scale-110 group-hover:scale-125 transition-transform duration-300"></div>
-              </div>
-            )}
-            <div className="text-left">
-              <span className="font-display font-extrabold text-base sm:text-lg lg:text-xl tracking-tight text-white block leading-tight">
+            <div className="bg-primary-600 group-hover:bg-primary-500 text-white p-1.5 sm:p-2 rounded-lg transition-colors duration-300 relative shrink-0">
+              <ShieldCheck className="w-5 h-5 sm:w-6 sm:h-6" />
+              <div className="absolute inset-0 rounded-lg border border-white/20 scale-110 group-hover:scale-125 transition-transform duration-300"></div>
+            </div>
+            
+            <div className="text-left flex flex-col justify-center min-w-0">
+              <span className="font-display font-extrabold text-sm sm:text-lg lg:text-xl tracking-tight text-white block leading-tight truncate">
                 {currentBrandName.toUpperCase().endsWith("ENGINEERING") || currentBrandName.toUpperCase().endsWith("ENGINEERING ") ? (
                   <>
                     {currentBrandName.toUpperCase().replace("ENGINEERING", "").trim()}
-                    <span className="text-amber-500 font-semibold text-[11px] sm:text-xs lg:text-sm ml-1 tracking-wider uppercase">ENGINEERING</span>
+                    <span className="text-amber-500 font-semibold text-[9px] sm:text-[11px] lg:text-sm ml-1 tracking-wider uppercase">ENGINEERING</span>
                   </>
                 ) : (
                   <>
-                    {currentBrandName.toUpperCase()}
-                    <span className="text-amber-500 font-semibold text-[11px] sm:text-xs lg:text-sm ml-1 tracking-wider uppercase">ENGINEERING</span>
+                    <span className="truncate">{currentBrandName.toUpperCase()}</span>
+                    <span className="text-amber-500 font-semibold text-[9px] sm:text-[11px] lg:text-sm ml-1 tracking-wider uppercase hidden sm:inline">ENGINEERING</span>
                   </>
                 )}
               </span>
-              <span className="text-[8px] sm:text-[9px] text-slate-400 block tracking-wider font-mono uppercase leading-tight mt-0.5">
+              <span className="text-[7px] sm:text-[9px] text-slate-400 block tracking-wider font-mono uppercase leading-tight mt-0.5 truncate">
                 {lang === 'uz' ? 'Toshkentda liftlar & eskalatorlar' : lang === 'en' ? 'Elevators & escalators in Tashkent' : 'Лифты & Эскалаторы в Ташкенте'}
               </span>
             </div>

@@ -15,7 +15,7 @@ export default function Footer({ onOpenCallback, general, phones, emails }) {
 
   return (
     <footer className="bg-slate-950 text-slate-400 py-12 border-t border-slate-900 font-sans relative">
-      <div className="max-w-7xl mx-auto px-2.5 sm:px-6 lg:px-8">
+      <div className="w-full max-w-[1600px] mx-auto px-4 sm:px-6 lg:px-12">
         
         <div className="grid grid-cols-1 md:grid-cols-12 gap-8 mb-12">
           

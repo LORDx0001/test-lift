@@ -16,7 +16,7 @@ export default function Certificates({ certificates, certificateCards }) {
 
   return (
     <section id="certificates" className="py-20 bg-white scroll-mt-16">
-      <div className="max-w-7xl mx-auto px-2.5 sm:px-6 lg:px-8">
+      <div className="w-full max-w-[1600px] mx-auto px-4 sm:px-6 lg:px-12">
         
         {/* Title */}
         <div className="text-center max-w-3xl mx-auto mb-16 space-y-4">

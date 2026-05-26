@@ -11,7 +11,7 @@ export default function Hero({ onOpenCallback, heroData, heroSlides, general }) 
   const { lang } = useI18n();
   const [currentSlide, setCurrentSlide] = useState(0);
 
-  // Build slides purely from backend — empty array if nothing seeded yet
+  // Build slides purely from backend — fallback to a default slide if nothing seeded yet
   const slides = (heroSlides && heroSlides.length > 0)
     ? heroSlides.map((s) => ({
         tag:        getLocalized(s, "mini_title", lang) || "",
@@ -21,7 +21,15 @@ export default function Hero({ onOpenCallback, heroData, heroSlides, general }) 
         buttonText: getLocalized(s, "button_text", lang) || "",
         bgImage:    s.hero_bg || "",
       }))
-    : [];
+    : [
+        {
+          tag: "SAFETECH ENGINEERING",
+          title: lang === "uz" ? "MUKAMMAL LIFTLAR" : lang === "en" ? "PREMIUM ELEVATORS" : "СОВЕРШЕННЫЕ ЛИФТЫ",
+          desc: lang === "uz" ? "Ma'lumotlar bazasi bo'sh. Iltimos, admin panel orqali slayd qo'shing yoki seed qiling." : "База данных пуста. Пожалуйста, добавьте слайды через админ-панель или запустите seed.",
+          buttonText: "Admin",
+          bgImage: "https://images.unsplash.com/photo-1574627042598-cbce682c9fcd?q=80&w=1920&auto=format&fit=crop"
+        }
+      ];
 
   // Bottom badges — from general settings
   const badges = general
@@ -86,7 +94,7 @@ export default function Hero({ onOpenCallback, heroData, heroSlides, general }) 
         <div className="absolute inset-0 bg-[linear-gradient(to_right,#0f172a_1px,transparent_1px),linear-gradient(to_bottom,#0f172a_1px,transparent_1px)] bg-[size:4rem_4rem] [mask-image:radial-gradient(ellipse_60%_50%_at_50%_0%,#000_70%,transparent_100%)] opacity-35 z-0" />
       </div>
 
-      <div className="max-w-7xl mx-auto px-2.5 sm:px-6 lg:px-8 relative z-10 w-full py-12 md:py-20">
+      <div className="w-full max-w-[1600px] mx-auto px-4 sm:px-6 lg:px-12 relative z-10 w-full py-12 md:py-20">
         <div className="lg:col-span-12">
 
           {/* ── Animated slide content ── */}
@@ -158,7 +166,7 @@ export default function Hero({ onOpenCallback, heroData, heroSlides, general }) 
 
           {/* ── Bottom badges from GeneralSetting ── */}
           {badges.length > 0 && (
-            <div className="grid grid-cols-2 sm:grid-cols-3 gap-4 pt-12 md:pt-16 border-t border-slate-800 mt-12 max-w-3xl">
+            <div className="grid grid-cols-1 min-[400px]:grid-cols-2 sm:grid-cols-3 gap-4 pt-12 md:pt-16 border-t border-slate-800 mt-12 max-w-3xl">
               {badges.map((badge, i) => {
                 const Icon = badge.icon;
                 return (
