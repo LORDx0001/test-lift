@@ -161,6 +161,7 @@ function MainLayout({ pageData, onSelectService, onOpenModal }) {
       <FAQ 
         faqs={pageData?.faqs}
         faqItems={pageData?.faq_items}
+        general={pageData?.general}
       />
       <ContactForm 
         initialService="Монтаж лифтов под ключ" 

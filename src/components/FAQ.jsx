@@ -4,11 +4,13 @@ import { ChevronDown, HelpCircle } from "lucide-react";
 import { useI18n } from "../i18n";
 import { getLocalized } from "../utils/localize";
 
-export default function FAQ({ faqs, faqItems }) {
+export default function FAQ({ faqs, faqItems, general }) {
   const { lang } = useI18n();
   const [openIndex, setOpenIndex] = useState(0);
 
   if (!faqItems || faqItems.length === 0) return null;
+
+  const telegramUrl = general?.telegram_url || "#";
 
   const toggleAccordion = (index) => {
     setOpenIndex(openIndex === index ? null : index);
@@ -83,7 +85,7 @@ export default function FAQ({ faqs, faqItems }) {
         {/* Micro Advisory Telegram CTA */}
         <div className="mt-12 text-center text-xs text-slate-500">
           {lang === 'uz' ? "Qo'shimcha texnik savollaringiz bormi?" : lang === 'en' ? "Have additional technical questions?" : "Остались дополнительные технические вопросы?"}
-          <a href="https://t.me/bexruz_toj" target="_blank" rel="noopener noreferrer" className="text-primary-600 font-semibold hover:underline ml-1">
+          <a href={telegramUrl} target="_blank" rel="noopener noreferrer" className="text-primary-600 font-semibold hover:underline ml-1">
              Telegram-чат
           </a>{" "}
           {lang === 'uz' ? "orqali muhandisimizga yozing." : lang === 'en' ? "to ask our design engineers directly." : "для моментальной обратной связи."}

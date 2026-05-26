@@ -151,7 +151,7 @@ export default function Header({ onOpenCallback, onHomeReset, forceSolidBg = fal
             </div>
 
             <a
-              href="https://t.me/bexruz_toj"
+              href={telegramUrl || "#"}
               target="_blank"
               rel="noopener noreferrer"
               className="bg-sky-500 hover:bg-sky-600 text-white p-2 rounded-full transition-transform duration-200 hover:scale-105 shadow-md flex items-center justify-center cursor-pointer"
@@ -232,7 +232,7 @@ export default function Header({ onOpenCallback, onHomeReset, forceSolidBg = fal
               {/* Social CTA */}
               <div className="flex items-center gap-3">
                 <a
-                  href="https://t.me/bexruz_toj"
+                  href={telegramUrl || "#"}
                   target="_blank"
                   rel="noopener noreferrer"
                   className="flex-1 bg-sky-650 hover:bg-sky-600 text-white py-3 rounded-xl transition-all duration-200 text-xs font-bold flex items-center justify-center gap-2 border border-sky-500/20"
