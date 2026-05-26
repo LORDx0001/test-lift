@@ -15,5 +15,5 @@ export const endpoints = {
   projects:   (params) => api.get('/api/projects/', { params }),
   project:    (slug) => api.get(`/api/projects/${slug}/`),
   contact:    (data) => api.post('/api/contact/', data),
-  pageData:   () => api.get('/api/page-data/'),
+  pageData:   () => api.get(`/api/page-data/?t=${new Date().getTime()}`),
 };
