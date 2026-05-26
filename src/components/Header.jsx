@@ -48,6 +48,7 @@ export default function Header({ onOpenCallback, onHomeReset, forceSolidBg = fal
   const navbarLogoUrl = general?.navbar_logo;
 
   const phoneToShow = phones?.[0]?.number || "+998 (71) 200-00-00";
+  const telegramUrl = general?.telegram_url || "";
 
   return (
     <>
