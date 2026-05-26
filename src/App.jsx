@@ -134,6 +134,7 @@ function MainLayout({ pageData, onSelectService, onOpenModal }) {
         onOpenCallback={() => onOpenModal("Монтаж лифтового оборудования")} 
         heroData={pageData?.hero}
         heroSlides={pageData?.hero_slides}
+        general={pageData?.general}
       />
       <Stats experienceData={pageData?.experience} experienceCards={pageData?.experience_cards} />
       <About 
@@ -164,6 +165,7 @@ function MainLayout({ pageData, onSelectService, onOpenModal }) {
       <ContactForm 
         initialService="Монтаж лифтов под ключ" 
         general={pageData?.general}
+        contact={pageData?.contact}
         phones={pageData?.phones}
         emails={pageData?.emails}
       />
