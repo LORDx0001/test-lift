@@ -18,12 +18,25 @@ import { endpoints } from "./api";
 import { getLocalized } from "./utils/localize";
 import { WifiOff, RefreshCw, X } from "lucide-react";
 
+import SEO from "./components/SEO";
+import { HelmetProvider } from "react-helmet-async";
+
 // Scroll to top on navigation or reset
 function ScrollReset() {
-  const { pathname } = useLocation();
+  const { pathname, hash } = useLocation();
   useEffect(() => {
-    window.scrollTo({ top: 0, behavior: "smooth" });
-  }, [pathname]);
+    if (hash) {
+      setTimeout(() => {
+        const id = hash.replace('#', '');
+        const element = document.getElementById(id);
+        if (element) {
+          element.scrollIntoView({ behavior: "smooth", block: "start" });
+        }
+      }, 100);
+    } else {
+      window.scrollTo({ top: 0, behavior: "smooth" });
+    }
+  }, [pathname, hash]);
   return null;
 }
 
@@ -128,8 +141,25 @@ function Loader() {
 }
 
 function MainLayout({ pageData, onSelectService, onOpenModal }) {
+  const { lang } = useI18n();
+  const general = pageData?.general;
+  const brandName = general?.brand_name || "Safetech Engineering";
+  
+  const seoTitle = lang === 'uz' ? `${brandName} - Lift va eskalatorlar` 
+                 : lang === 'en' ? `${brandName} - Elevators & Escalators` 
+                 : `${brandName} - Лифты и эскалаторы в Ташкенте`;
+  
+  const seoDesc = lang === 'uz' ? "Safetech Engineering Toshkent shahri bo'ylab liftlar, eskalatorlar va yuk ko'tarish platformalarini o'rnatish, ta'mirlash va texnik nazorat xizmatlarini taqdim etadi."
+                : lang === 'en' ? "Safetech Engineering provides full installation, maintenance, repair, and technical audit services for elevators and escalators across Tashkent."
+                : "Safetech Engineering выполняет полный спектр услуг по установке, диагностике, ремонту и техническому надзору за лифтами, эскалаторами и грузовыми подъемными платформами в Ташкенте.";
+                
   return (
     <>
+      <SEO 
+        title={seoTitle} 
+        description={seoDesc} 
+        keywords="лифты, эскалаторы, монтаж лифтов, Ташкент, Safetech Engineering, elevators, escalators, tashkent, installation, repair, техническое обслуживание"
+      />
       <Hero 
         onOpenCallback={() => onOpenModal("Монтаж лифтового оборудования")} 
         heroData={pageData?.hero}
@@ -210,12 +240,19 @@ function ServiceDetailRoute({ pageData, onOpenModal }) {
   if (!service) return null;
 
   return (
-    <ServicePage 
-      service={service} 
-      onBack={() => navigate("/")} 
-      onSuccessSubmit={(details) => onOpenModal(service?.title || "Консультация")}
-      phones={pageData?.phones}
-    />
+    <>
+      <SEO 
+        title={`${service.title} | Safetech Engineering`} 
+        description={service.shortDescription} 
+        image={service.image} 
+      />
+      <ServicePage 
+        service={service} 
+        onBack={() => navigate("/#services")} 
+        onSuccessSubmit={(details) => onOpenModal(service?.title || "Консультация")}
+        phones={pageData?.phones}
+      />
+    </>
   );
 }
 
@@ -398,10 +435,12 @@ function AppContent() {
 
 export default function App() {
   return (
-    <BrowserRouter>
-      <I18nProvider>
-        <AppContent />
-      </I18nProvider>
-    </BrowserRouter>
+    <HelmetProvider>
+      <BrowserRouter>
+        <I18nProvider>
+          <AppContent />
+        </I18nProvider>
+      </BrowserRouter>
+    </HelmetProvider>
   );
 }

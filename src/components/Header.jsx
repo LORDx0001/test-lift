@@ -4,11 +4,15 @@ import { Menu, X, Phone, MessageSquare, ShieldCheck, Globe, ChevronDown } from "
 import { useI18n } from "../i18n";
 import { getLocalized } from "../utils/localize";
 
+import { useNavigate, useLocation } from "react-router-dom";
+
 export default function Header({ onOpenCallback, onHomeReset, forceSolidBg = false, general, phones }) {
   const { lang, setLang, t } = useI18n();
   const [isOpen, setIsOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
   const [langDropdownOpen, setLangDropdownOpen] = useState(false);
+  const navigate = useNavigate();
+  const location = useLocation();
 
   useEffect(() => {
     const handleScroll = () => {
@@ -33,15 +37,15 @@ export default function Header({ onOpenCallback, onHomeReset, forceSolidBg = fal
 
   const handleLinkClick = (href) => {
     setIsOpen(false);
-    if (onHomeReset) {
-      onHomeReset();
-    }
-    setTimeout(() => {
+    if (location.pathname !== "/") {
+      navigate("/" + href);
+    } else {
+      // If we are already on home page, scroll smoothly
       const element = document.querySelector(href);
       if (element) {
         element.scrollIntoView({ behavior: "smooth", block: "start" });
       }
-    }, 150);
+    }
   };
 
   const currentBrandName = general?.brand_name || "SAFETECH";
